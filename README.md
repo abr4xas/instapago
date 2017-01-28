@@ -1,4 +1,4 @@
-![Instapago Payment Gateway for WooCommerce](assets/banner-772x250.png)
+![Instapago Payment Gateway for WooCommerce](https://i0.wp.com/plugins.svn.wordpress.org/!svn/bc/1583953/instapago/assets/banner-772x250.png)
 
 Instapago Payment Gateway for WooCommerce
 ---

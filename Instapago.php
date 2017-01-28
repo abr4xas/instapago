@@ -28,9 +28,9 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
  *
  * @since 1.0.0
  *
- * @param array $gateways all available WC gateways
+ * @param array $methods all available WC gateways
  *
- * @return array $gateways all WC gateways + WC_Gateway_Instapago_Commerce
+ * @return array $methods all WC gateways + WC_Gateway_Instapago_Commerce
  */
 function add_instapago_class($methods)
 {
@@ -160,10 +160,12 @@ function init_instapago_class()
         public function payment_fields()
         {
             if ($this->debug == 'yes') {
+
                 echo '<p><strong>TEST MODE ENABLED</strong></p>';
-            } else {
-                echo '<p>'.$this->description.'</p>';
             }
+
+            echo '<p>'.$this->description.'</p>';
+
             include 'includes/payment-fields.php';
         }
 
@@ -198,11 +200,6 @@ function init_instapago_class()
 
             $result = $this->checkResponseCode($obj);
 
-            if ($this->debug == 'yes') {
-                $this->log(': se ha procesado un pago ');
-                file_put_contents(dirname(__FILE__).'/data.log', print_r($result, true)."\n\n".'======================'."\n\n", FILE_APPEND);
-            }
-
             if ($result['code'] == 201) {
                 // Payment received and stock has been reduced
                 $order->payment_complete();
@@ -228,9 +225,9 @@ function init_instapago_class()
 
                 if ($img = get_option('woocommerce_email_header_image')) {
                     $logoCorreo = '<a target="_blank" style="text-decoration: none;" href="'.$siteUrl.'"><img border="0" vspace="0" hspace="0" src="'.esc_url($img).'" alt="'.get_bloginfo('name', 'display').'" title="'.get_bloginfo('name', 'display').'" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>';
-                } else {
-                    $logoCorreo = '';
                 }
+
+                $logoCorreo = '';
 
                 // Retrieve the email template required
                 $message = file_get_contents('email.html', dirname(__FILE__));

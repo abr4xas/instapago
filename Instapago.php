@@ -6,8 +6,8 @@
  * Version: 1.0.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
- * Requires at least: 4.5
- * Tested up to: 4.6
+ * Requires at least: 4.6
+ * Tested up to: 4.7
  *
  * @package WC_Gateway_Instapago_Commerce
  * @category Admin

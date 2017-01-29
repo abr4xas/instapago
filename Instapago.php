@@ -24,6 +24,17 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
     return;
 }
 
+// Add custom action links
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'instapago_action_links');
+
+function instapago_action_links($links) {
+    $plugin_links = [
+        '<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=instapago') . '">' . __('Settings', 'instapago') . '</a>',
+    ];
+
+	// Merge our new link with the default ones
+	return array_merge($plugin_links, $links);
+}
 /**
  * Add the gateway to WC Available Gateways.
  *

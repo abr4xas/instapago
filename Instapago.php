@@ -160,7 +160,6 @@ function init_instapago_class()
         public function payment_fields()
         {
             if ($this->debug == 'yes') {
-
                 echo '<p><strong>TEST MODE ENABLED</strong></p>';
             }
 

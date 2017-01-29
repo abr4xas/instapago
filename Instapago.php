@@ -3,7 +3,8 @@
  * Plugin Name: Instapago Payment Gateway for WooCommerce
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
- * Version: 1.0.0
+ * Text Domain: instapago
+ * Version: 1.0.1
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
  * Requires at least: 4.6
@@ -66,7 +67,7 @@ function init_instapago_class()
          *
          * @var string
          */
-        public $version = '1.0.0';
+        public $version = '1.0.1';
 
         /**
          * @param bool Whether or not logging is enabled

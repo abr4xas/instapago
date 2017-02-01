@@ -1,5 +1,4 @@
-Instapago Payment Gateway for WooCommerce
----
+=== Instapago Payment Gateway for WooCommerce ===
 
 Contributors: abr4xas
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=webmaster%40abr4xas%2eorg&lc=VE&no_note=1&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted

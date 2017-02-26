@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=webma
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,4 +40,4 @@ Upload the plugin files to the `/wp-content/plugins/instapago` directory, or ins
 
 == Changelog ==
 
-TODO
+Updating the payment form

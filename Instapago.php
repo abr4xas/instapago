@@ -43,7 +43,7 @@ function instapago_action_links($links)
  *
  * @param array $methods all available WC gateways
  *
- * @return array $methods all WC gateways + WC_Gateway_Instapago_Commerce
+ * @return string[] $methods all WC gateways + WC_Gateway_Instapago_Commerce
  */
 function add_instapago_class($methods)
 {
@@ -280,7 +280,7 @@ function init_instapago_class()
          * Realiza Transaccion
          * Efectúa y retornar una respuesta a un metodo de pago.
          *
-         * @param $url endpoint a consultar
+         * @param string $url endpoint a consultar
          * @param $fields datos para la consulta
          *
          * @return $obj array resultados de la transaccion
@@ -334,6 +334,10 @@ function init_instapago_class()
             }
         }
 
+        /**
+         * @param string $customSubject
+         * @param string $customMsg
+         */
         public function SendCustomEmail($wpAdmin, $wpBlogName, $customer, $customSubject, $customMsg)
         {
             $adminEmail = $wpAdmin; // root admin

@@ -195,7 +195,7 @@ function init_instapago_class()
                     $logger = wc_get_logger();
 
                     $context = [
-                        'source' => 'instapago'
+                        'source' => 'instapago',
                     ];
 
                     $logger->log('info', 'Se ha procesado un pago', $context);

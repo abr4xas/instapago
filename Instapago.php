@@ -218,8 +218,6 @@ function init_instapago_class()
                 update_post_meta($order->id, 'instapago_id_payment', $result['id_pago']);
                 update_post_meta($order->id, 'instapago_bank_msg', $result['msg_banco']);
 
-
-
                 if ($img = get_option('woocommerce_email_header_image')) {
                     $logoCorreo = '<a target="_blank" style="text-decoration: none;" href="'.$siteUrl.'"><img border="0" vspace="0" hspace="0" src="'.esc_url($img).'" alt="'.get_bloginfo('name', 'display').'" title="'.get_bloginfo('name', 'display').'" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>';
                 }

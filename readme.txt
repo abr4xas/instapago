@@ -40,4 +40,7 @@ Upload the plugin files to the `/wp-content/plugins/instapago` directory, or ins
 
 == Changelog ==
 
-Updating the payment form
+* Actualizado el formulario de pago
+* Se modifica numero de version
+* Se agrega mas informacion en la orden creada en woocommerce
+* Solucionado el error de no crear los `log` en modo desarrollo

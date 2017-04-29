@@ -4,7 +4,7 @@
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 1.1.0
+ * Version: 2.0.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
  * Requires at least: 4.6
@@ -79,17 +79,7 @@ function init_instapago_class()
          *
          * @var string
          */
-        public $version = '1.1.0';
-
-        /**
-         * @param bool Whether or not logging is enabled
-         */
-        public static $log_enabled = false;
-
-        /**
-         * @param WC_Logger Logger instance
-         */
-        public static $log = false;
+        public $version = '2.0.0';
 
         /**
          * Constructor for the gateway.
@@ -115,7 +105,6 @@ function init_instapago_class()
             // Define custom message for email
             $this->headerMail = $this->get_option('mail_header');
             $this->subheaderMail = $this->get_option('mail_subheader');
-            self::$log_enabled = $this->debug;
 
             $this->msg['message'] = '';
             $this->msg['class'] = '';
@@ -123,21 +112,6 @@ function init_instapago_class()
             add_action('woocommerce_update_options_payment_gateways_'.$this->id, [$this, 'process_admin_options']);
             add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'finalize_order'], 0);
             add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'receipt_page']);
-        }
-
-        /**
-         * Logging method.
-         *
-         * @param string $message
-         */
-        public static function log($message)
-        {
-            if (self::$log_enabled) {
-                if (empty(self::$log)) {
-                    self::$log = new WC_Logger();
-                }
-                self::$log->add('instapago', $message);
-            }
         }
 
         /**
@@ -218,8 +192,14 @@ function init_instapago_class()
                 $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$result['msg_banco'].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$result['id_pago'].'</strong><br/>Referencia Bancaria: <br/><strong>'.$result['reference'].'</strong>', 'woothemes'));
 
                 if ($this->debug == 'yes') {
-                    $this->log(': se ha procesado un pago ');
-                    file_put_contents(dirname(__FILE__).'/data.log', print_r($result, true)."\n\n".'======================'."\n\n", FILE_APPEND);
+                    $logger = wc_get_logger();
+
+                    $context = [
+                        'source' => 'instapago',
+                    ];
+
+                    $logger->log('info', 'Se ha procesado un pago', $context);
+                    file_put_contents(dirname(__FILE__).'/data.log', print_r($result, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
                 }
 
                 // Set vars
@@ -234,6 +214,9 @@ function init_instapago_class()
                 $copyfooter = '';
 
                 update_post_meta($order->id, 'instapago_voucher', $voucher);
+                update_post_meta($order->id, 'instapago_bank_ref', $result['reference']);
+                update_post_meta($order->id, 'instapago_id_payment', $result['id_pago']);
+                update_post_meta($order->id, 'instapago_bank_msg', $result['msg_banco']);
 
                 if ($img = get_option('woocommerce_email_header_image')) {
                     $logoCorreo = '<a target="_blank" style="text-decoration: none;" href="'.$siteUrl.'"><img border="0" vspace="0" hspace="0" src="'.esc_url($img).'" alt="'.get_bloginfo('name', 'display').'" title="'.get_bloginfo('name', 'display').'" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>';

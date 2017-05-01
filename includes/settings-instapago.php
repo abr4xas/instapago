@@ -80,25 +80,4 @@ return [
         'default'     => 'yes',
         'description' => sprintf(__('Save Instapago events inside <code>%s</code>', 'woocommerce'), wc_get_log_file_path('instapago')),
     ],
-    'mail_details' => [
-        'title'       => __('Mensajes personalizados en el correo de confirmación de compras', 'woocommerce'),
-        'type'        => 'title',
-        'description' => sprintf(__('En este apartado puede configurar los mensajes que van aparecer en el correo de confirmación de compra que se le envía al cliente junto al voucher.<br/> Todos estos mensajes son necesarios.', 'woocommerce')),
-    ],
-    'mail_header' => [
-        'title'       => __('Mensaje principal del correo', 'woocommerce'),
-        'type'        => 'text',
-        'description' => __('Mensaje principal del correo', 'woocommerce'),
-        'default'     => 'Confirmación de Compra',
-        'desc_tip'    => true,
-        'placeholder' => __('Requerido', 'woocommerce'),
-    ],
-    'mail_subheader' => [
-        'title'       => __('Mensaje secundario del correo', 'woocommerce'),
-        'type'        => 'text',
-        'description' => __('Mensaje secundario del correo', 'woocommerce'),
-        'default'     => 'Acontinuación el Voucher de su compra. Guarde para sus archivos',
-        'desc_tip'    => true,
-        'placeholder' => __('Requerido', 'woocommerce'),
-    ],
 ];

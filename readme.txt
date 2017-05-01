@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=webma
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,7 +40,9 @@ Upload the plugin files to the `/wp-content/plugins/instapago` directory, or ins
 
 == Changelog ==
 
-* Actualizado el formulario de pago
-* Se modifica numero de version
-* Se agrega mas informacion en la orden creada en woocommerce
+* Se solucionan errores con funciones deprecadas en la versión 3.0 de Woocommerce
+* Se elimina envio de voucher por correo
 * Solucionado el error de no crear los `log` en modo desarrollo
+* Se agrega mas informacion en la orden creada en woocommerce
+* Se modifica numero de version
+* Actualizado el formulario de pago

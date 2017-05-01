@@ -4,7 +4,7 @@
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
  * Requires at least: 4.6
@@ -79,7 +79,7 @@ function init_instapago_class()
          *
          * @var string
          */
-        public $version = '2.0.0';
+        public $version = '2.1.0';
 
         /**
          * Constructor for the gateway.
@@ -158,7 +158,8 @@ function init_instapago_class()
         public function process_payment($order_id)
         {
             global $woocommerce;
-            $order = new WC_Order($order_id);
+            // $order = new WC_Order($order_id);
+            $order = wc_get_order($order_id);
             $url = 'https://api.instapago.com/payment';
             $cardHolder = strip_tags(trim($_POST['card_holder_name']));
             $cardHolderId = strip_tags(trim($_POST['user_dni']));
@@ -184,7 +185,7 @@ function init_instapago_class()
 
             $obj = $this->curlTransaccion($url, $fields);
 
-            $result = $this->checkResponseCode($obj);
+            $result = $this->checkResponseCode($obj);           
 
             if ($result['code'] == 201) {
                 // Payment received and stock has been reduced
@@ -202,59 +203,24 @@ function init_instapago_class()
                     file_put_contents(dirname(__FILE__).'/data.log', print_r($result, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
                 }
 
-                // Set vars
-                $adminEmail = get_option('admin_email', '');
-                $siteUrl = get_site_url();
-                $sender = get_bloginfo('name', 'display');
-                $customerEmail = $order->billing_email;
-                $customerName = $order->last_name.' '.$order->first_name;
-                $voucher = $result['voucher'];
-                $headerMail = $this->headerMail;
-                $subheaderMail = $this->subheaderMail;
-                $copyfooter = '';
-
-                update_post_meta($order->id, 'instapago_voucher', $voucher);
-                update_post_meta($order->id, 'instapago_bank_ref', $result['reference']);
-                update_post_meta($order->id, 'instapago_id_payment', $result['id_pago']);
-                update_post_meta($order->id, 'instapago_bank_msg', $result['msg_banco']);
-
-                if ($img = get_option('woocommerce_email_header_image')) {
-                    $logoCorreo = '<a target="_blank" style="text-decoration: none;" href="'.$siteUrl.'"><img border="0" vspace="0" hspace="0" src="'.esc_url($img).'" alt="'.get_bloginfo('name', 'display').'" title="'.get_bloginfo('name', 'display').'" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>';
-                }
-
-                $logoCorreo = '';
-
-                // Retrieve the email template required
-                $message = file_get_contents('email.html', dirname(__FILE__));
-
-                $message = str_replace('%logo%', $logoCorreo, $message);
-                $message = str_replace('%headerMail%', $headerMail, $message);
-                $message = str_replace('%subheaderMail%', $subheaderMail, $message);
-                $message = str_replace('%voucher%', $voucher, $message);
-                $message = str_replace('%copyfooter%', $copyfooter, $message);
-
-                // send voucher
-                $wpAdmin = $adminEmail;
-                $wpBlogName = $sender;
-                $customer = $customerEmail;
-                $customSubject = 'Recibo de tu pedido en ';
-                $customMsg = $message;
-
-                $this->SendCustomEmail($wpAdmin, $wpBlogName, $customer, $customSubject, $customMsg);
+                update_post_meta($order_id, 'instapago_voucher', $result['voucher']);
+                update_post_meta($order_id, 'instapago_bank_ref', $result['reference']);
+                update_post_meta($order_id, 'instapago_id_payment', $result['id_pago']);
+                update_post_meta($order_id, 'instapago_bank_msg', $result['msg_banco']);
 
                 // Mark as complete
                 $order->update_status('completed');
 
                 // Reduce stock levels
-                $order->reduce_order_stock();
+                wc_reduce_stock_levels( $order_id );
 
                 // Remove cart
-                $woocommerce->cart->empty_cart();
+                WC()->cart->empty_cart();              
 
                 // Return thankyou redirect
                 return [
-                    'result'   => 'success',
-                    'redirect' => $this->get_return_url($order),
+                    'result' 	=> 'success',
+                    'redirect'	=> $this->get_return_url( $order ),
                 ];
             }
         }
@@ -295,7 +261,6 @@ function init_instapago_class()
         public function checkResponseCode($obj)
         {
             $code = $obj->code;
-            $msg = $obj->message;
             if ($code == 400) {
                 throw new \Exception('Error al validar los datos enviados.');
             } elseif ($code == 401) {
@@ -309,53 +274,11 @@ function init_instapago_class()
             } elseif ($code == 201) {
                 return [
                     'code'      => $code,
-                    'msg_banco' => $msg,
+                    'msg_banco' => $obj->message,
                     'voucher'   => html_entity_decode($obj->voucher),
                     'id_pago'   => $obj->id,
                     'reference' => $obj->reference,
                 ];
-            }
-        }
-
-        /**
-         * @param string $customSubject
-         * @param string $customMsg
-         */
-        public function SendCustomEmail($wpAdmin, $wpBlogName, $customer, $customSubject, $customMsg)
-        {
-            $adminEmail = $wpAdmin; // root admin
-            $sender = $wpBlogName; // Site name
-            $customerEmail = $customer; // woocommerce customer email
-            $msg = $customSubject; // custom subject
-            $message = $customMsg; // custom msg
-
-            // Setup PHPMailer
-            $mail = new PHPMailer();
-            $mail->isSMTP();
-            $mail->SMTPDebug = 2;
-            $mail->Debugoutput = 'html';
-            $mail->Host = '127.0.0.1';
-            $mail->Port = 25;
-            $mail->setFrom($adminEmail, $sender);
-            $mail->addAddress($customerEmail);
-            $mail->isHTML(true);
-            $mail->SMTPOptions = [
-                'ssl' => [
-                    'verify_peer'       => false,
-                    'verify_peer_name'  => false,
-                    'allow_self_signed' => true,
-                ],
-            ];
-
-            // Set the subject
-            $mail->Subject = $msg.''.$sender;
-
-            //Set the message
-            $mail->MsgHTML($message);
-
-            // Send the email
-            if (!$mail->Send()) {
-                $this->log('Mailer Error: '.$mail->ErrorInfo);
             }
         }
     } // End WC_Gateway_Instapago_Commerce

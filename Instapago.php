@@ -47,7 +47,7 @@ function instapago_action_links($links)
  */
 function add_instapago_class($methods)
 {
-    $methods[] = 'WC_Gateway_Instapago_Commerce';
+    $methods[ ] = 'WC_Gateway_Instapago_Commerce';
 
     return $methods;
 }
@@ -106,12 +106,12 @@ function init_instapago_class()
             $this->headerMail = $this->get_option('mail_header');
             $this->subheaderMail = $this->get_option('mail_subheader');
 
-            $this->msg['message'] = '';
-            $this->msg['class'] = '';
+            $this->msg[ 'message' ] = '';
+            $this->msg[ 'class' ] = '';
             //Save hook
-            add_action('woocommerce_update_options_payment_gateways_'.$this->id, [$this, 'process_admin_options']);
-            add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'finalize_order'], 0);
-            add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'receipt_page']);
+            add_action('woocommerce_update_options_payment_gateways_'.$this->id, [ $this, 'process_admin_options' ]);
+            add_action('woocommerce_receipt_lamdaprocessing', [ &$this, 'finalize_order' ], 0);
+            add_action('woocommerce_receipt_lamdaprocessing', [ &$this, 'receipt_page' ]);
         }
 
         /**
@@ -161,12 +161,12 @@ function init_instapago_class()
             // $order = new WC_Order($order_id);
             $order = wc_get_order($order_id);
             $url = 'https://api.instapago.com/payment';
-            $cardHolder = strip_tags(trim($_POST['card_holder_name']));
-            $cardHolderId = strip_tags(trim($_POST['user_dni']));
-            $cardNumber = strip_tags(trim($_POST['valid_card_number']));
-            $cvc = strip_tags(trim($_POST['cvc_code']));
-            $exp_month = strip_tags(trim($_POST['exp_month']));
-            $exp_year = strip_tags(trim($_POST['exp_year']));
+            $cardHolder = strip_tags(trim($_POST[ 'card_holder_name' ]));
+            $cardHolderId = strip_tags(trim($_POST[ 'user_dni' ]));
+            $cardNumber = strip_tags(trim($_POST[ 'valid_card_number' ]));
+            $cvc = strip_tags(trim($_POST[ 'cvc_code' ]));
+            $exp_month = strip_tags(trim($_POST[ 'exp_month' ]));
+            $exp_year = strip_tags(trim($_POST[ 'exp_year' ]));
             $expirationDate = $exp_month.'/'.$exp_year;
 
             $fields = [
@@ -180,17 +180,17 @@ function init_instapago_class()
                 'CVC'            => $cvc, //required
                 'ExpirationDate' => $expirationDate, //required
                 'StatusId'       => $this->paymod, //required
-                'IP'             => $_SERVER['REMOTE_ADDR'], //required
+                'IP'             => $_SERVER[ 'REMOTE_ADDR' ], //required
             ];
 
             $obj = $this->curlTransaccion($url, $fields);
 
             $result = $this->checkResponseCode($obj);
 
-            if ($result['code'] == 201) {
+            if ($result[ 'code' ] == 201) {
                 // Payment received and stock has been reduced
                 $order->payment_complete();
-                $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$result['msg_banco'].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$result['id_pago'].'</strong><br/>Referencia Bancaria: <br/><strong>'.$result['reference'].'</strong>', 'woothemes'));
+                $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$result[ 'msg_banco' ].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$result[ 'id_pago' ].'</strong><br/>Referencia Bancaria: <br/><strong>'.$result[ 'reference' ].'</strong>', 'woothemes'));
 
                 if ($this->debug == 'yes') {
                     $logger = wc_get_logger();
@@ -203,10 +203,10 @@ function init_instapago_class()
                     file_put_contents(dirname(__FILE__).'/data.log', print_r($result, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
                 }
 
-                update_post_meta($order_id, 'instapago_voucher', $result['voucher']);
-                update_post_meta($order_id, 'instapago_bank_ref', $result['reference']);
-                update_post_meta($order_id, 'instapago_id_payment', $result['id_pago']);
-                update_post_meta($order_id, 'instapago_bank_msg', $result['msg_banco']);
+                update_post_meta($order_id, 'instapago_voucher', $result[ 'voucher' ]);
+                update_post_meta($order_id, 'instapago_bank_ref', $result[ 'reference' ]);
+                update_post_meta($order_id, 'instapago_id_payment', $result[ 'id_pago' ]);
+                update_post_meta($order_id, 'instapago_bank_msg', $result[ 'msg_banco' ]);
 
                 // Mark as complete
                 $order->update_status('completed');

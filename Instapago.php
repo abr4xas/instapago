@@ -185,7 +185,7 @@ function init_instapago_class()
 
             $obj = $this->curlTransaccion($url, $fields);
 
-            $result = $this->checkResponseCode($obj);           
+            $result = $this->checkResponseCode($obj);
 
             if ($result['code'] == 201) {
                 // Payment received and stock has been reduced
@@ -212,15 +212,15 @@ function init_instapago_class()
                 $order->update_status('completed');
 
                 // Reduce stock levels
-                wc_reduce_stock_levels( $order_id );
+                wc_reduce_stock_levels($order_id);
 
                 // Remove cart
-                WC()->cart->empty_cart();              
+                WC()->cart->empty_cart();
 
                 // Return thankyou redirect
                 return [
-                    'result' 	=> 'success',
-                    'redirect'	=> $this->get_return_url( $order ),
+                    'result'      => 'success',
+                    'redirect'    => $this->get_return_url($order),
                 ];
             }
         }

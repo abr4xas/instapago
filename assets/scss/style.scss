@@ -1,0 +1,95 @@
+$breakpoints: (
+  small: 360px,
+  medium: 768px,
+  large: 1024px,
+  x-large: 1400px
+);
+@mixin MQ($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media screen and (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+.instapago-form {
+  &--input,
+  &--select {
+    padding: .5em;
+    border: 2px solid #ccc;
+    margin: 5px 0 !important; //conflicto de clase con estilos de woo
+  }
+  &--select {
+    @media screen and (max-width: 378px) {
+      width: 50%;
+      float: left;
+    }
+  }
+  &--name {
+    width: 100%;
+    @include MQ(609px) {
+      width: 50%;
+    }
+  }
+  &--tipe {
+    padding: .6em;
+    width: 100%;
+    @include MQ(361px) {
+      width: 19%;
+    }
+    @include MQ(609px) {
+      width: 10%;
+    }
+  }
+  &--id {
+    width: 100%;
+    @include MQ(361px) {
+      width: 80%;
+    }
+    @include MQ(609px) {
+      width: 39%;
+    }
+  }
+  &--tdc-number {
+    width: 100%;
+    @include MQ(609px) {
+      width: 60.3%;
+    }
+  }
+  &--ccv {
+    width: 100%;
+    @include MQ(609px) {
+      width: 20%;
+    }
+  }
+  &--txt-help {
+    display: inline;
+    font-size: 12.88px;
+    color: grey;
+  }
+}
+
+.tdc-logos {
+  display: none;
+  @include MQ(609px) {
+    display: inline-block;
+    width: 15%;
+  }
+}
+
+.instapago-img {
+  max-width: 100% !important;
+}
+
+.instapago-copy {
+  margin: 25px 0;
+}
+
+.instapago-text-center {
+  text-align: center;
+}

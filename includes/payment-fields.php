@@ -68,7 +68,11 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                 <select name="exp_year" id="exp_year" class="field select medium" tabindex="7">
                         <option value="-1">AÑO</option>
                         <?php
-                            for ($y = date('Y'); $y <= date('Y') + 10; $y++) {
+                            /*for ($y = date('Y'); $y <= date('Y') + 10; $y++)
+                            Utilizar la funcion date limita el uso de tarjetas emitidas en el año en curso del sistema operativo,
+                            con un rango de 10 años se asegura el uso de tarjetas vijentes.
+                            */
+                            for ($y = 2010; $y <= 2017 + 10; $y++) {
                                 $x = date('Y');
                                 if ($y == $x) {
                                     echo '<option value="'.$y.'" selected>'.$y.'</option>';

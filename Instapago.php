@@ -4,11 +4,11 @@
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 2.1.0
+ * Version: 3.0.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
- * Requires at least: 4.6
- * Tested up to: 4.7.
+ * Requires at least: 4.8
+ * Tested up to: 4.9.1
  *
  * @category Admin
  *
@@ -79,7 +79,7 @@ function init_instapago_class()
          *
          * @var string
          */
-        public $version = '2.1.0';
+        public $version = '3.0.0';
 
         /**
          * Constructor for the gateway.
@@ -88,26 +88,26 @@ function init_instapago_class()
         {
             global $woocommerce;
             $this->id = 'instapago';
-            $this->order_button_text = __('Pagar con Instapago', 'woocommerce');
-            $this->medthod_title = __('Instapago', 'woocommerce');
-            $this->method_description = sprintf(__('Es una solución tecnológica pensada para el mercado de comercio electrónico (eCommerce) en Venezuela y Latinoamérica, con la intención de ofrecer un producto de primera categoría, que permita a las personas y empresas apalancar sus capacidades de expansión, facilitando los mecanismos de pago para sus clientes, con una integración amigable a los sistemas que actualmente utilizan.', 'woocommerce'));
+            $this->order_button_text    = __('Pagar con Instapago', 'woocommerce');
+            $this->medthod_title        = __('Instapago', 'woocommerce');
+            $this->method_description   = sprintf(__('Es una solución tecnológica pensada para el mercado de comercio electrónico (eCommerce) en Venezuela y Latinoamérica, con la intención de ofrecer un producto de primera categoría, que permita a las personas y empresas apalancar sus capacidades de expansión, facilitando los mecanismos de pago para sus clientes, con una integración amigable a los sistemas que actualmente utilizan.', 'woocommerce'));
             $this->has_fields = true;
             // Load the settings.
             $this->init_form_fields();
             $this->init_settings();
             // Define user set variables.
-            $this->title = $this->get_option('title');
-            $this->description = $this->get_option('description');
-            $this->keyId = $this->get_option('api_keyId');
-            $this->publicKeyId = $this->get_option('api_publicKeyId');
-            $this->debug = $this->get_option('debug', 'yes');
-            $this->paymod = $this->get_option('paymentaction');
+            $this->title        = $this->get_option('title');
+            $this->description  = $this->get_option('description');
+            $this->keyId        = $this->get_option('api_keyId');
+            $this->publicKeyId  = $this->get_option('api_publicKeyId');
+            $this->debug        = $this->get_option('debug', 'yes');
+            $this->paymod       = $this->get_option('paymentaction');
             // Define custom message for email
-            $this->headerMail = $this->get_option('mail_header');
-            $this->subheaderMail = $this->get_option('mail_subheader');
+            $this->headerMail       = $this->get_option('mail_header');
+            $this->subheaderMail    = $this->get_option('mail_subheader');
 
-            $this->msg['message'] = '';
-            $this->msg['class'] = '';
+            $this->msg['message']   = '';
+            $this->msg['class']     = '';
             //Save hook
             add_action('woocommerce_update_options_payment_gateways_'.$this->id, [$this, 'process_admin_options']);
             add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'finalize_order'], 0);

@@ -40,27 +40,23 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                         <option value="-1">Mes</option>
                     <?php
                         $months = [
-                            '01'=> '01',
-                            '02'=> '02',
-                            '03'=> '03',
-                            '04'=> '04',
-                            '05'=> '05',
-                            '06'=> '06',
-                            '07'=> '07',
-                            '08'=> '08',
-                            '09'=> '09',
-                            '10'=> '10',
-                            '11'=> '11',
-                            '12'=> '12',
+                            '01' => '01',
+                            '02' => '02',
+                            '03' => '03',
+                            '04' => '04',
+                            '05' => '05',
+                            '06' => '06',
+                            '07' => '07',
+                            '08' => '08',
+                            '09' => '09',
+                            '10' => '10',
+                            '11' => '11',
+                            '12' => '12',
                         ];
-                        foreach ($months as $mes=>$cod_mes) {
-                            $m = date('m');
-                            if ($mes == $m) {
-                                echo '<option value="'.$cod_mes.'" selected>'.$mes.'</option>';
-                            } else {
-                                echo '<option value="'.$cod_mes.'">'.$mes.'</option>';
-                            }
-                        }
+                        foreach ($months as $mes => $codMes) {
+                            $mesActual = date('m');
+                            echo '<option value="'.$codMes.'" '. ($mes == $mesActual) ? 'selected' : '' .'>'.$mes.'</option>';
+                         }
                     ?>
                     </select>
             </div>
@@ -68,13 +64,9 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                 <select name="exp_year" id="exp_year" class="field select medium" tabindex="7">
                         <option value="-1">AÑO</option>
                         <?php
-                            for ($y = date('Y'); $y <= date('Y') + 10; $y++) {
+                            for ($y = 2010; $y <= 2018 + 10; $y++) {
                                 $x = date('Y');
-                                if ($y == $x) {
-                                    echo '<option value="'.$y.'" selected>'.$y.'</option>';
-                                } else {
-                                    echo '<option value="'.$y.'">'.$y.'</option>';
-                                }
+                                echo '<option value="'.$y.'" '. ($y == $x) ? 'selected' : '' .'>'.$y.'</option>';
                             }
                         ?>
                     </select>

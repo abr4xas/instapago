@@ -196,11 +196,7 @@ function init_instapago_class()
 
                 $api = new Api($this->keyId,$this->publicKeyId);
 
-                if ($this->paymod == 1) {
-                    $respuesta = $api->reservePayment($paymentData);
-                } else {
-                    $respuesta = $api->directPayment($paymentData);
-                }
+                $respuesta = $api->directPayment($paymentData);
                 
                 $order->payment_complete();
                 $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$respuesta['msg_banco'].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$respuesta['id_pago'].'</strong><br/>Referencia Bancaria: <br/><strong>'.$respuesta['reference'].'</strong>', 'woothemes'));

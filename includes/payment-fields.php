@@ -72,7 +72,11 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                         ];
                         foreach ($months as $mes => $codMes) {
                             $mesActual = date('m');
-                            echo '<option value="'.$codMes.'" '. ($mes == $mesActual) ? 'selected' : '' .'>'.$mes.'</option>';
+                            if ($mes == $mesActual) {
+                                echo '<option value="'.$codMes.'" selected>'.$mes.'</option>';
+                            } else {
+                                echo '<option value="'.$codMes.'">'.$mes.'</option>';
+                            }
                          }
                     ?>
                     </select>
@@ -86,9 +90,13 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                             Utilizar la funcion date limita el uso de tarjetas emitidas en el año en curso del sistema operativo,
                             con un rango de 10 años se asegura el uso de tarjetas vijentes.
                             */
-                            for ($y = 2010; $y <= 2017 + 10; $y++) {
+                            for ($y = 2010; $y <= 2018 + 10; $y++) {
                                 $x = date('Y');
-                                echo '<option value="'.$y.'" '. ($y == $x) ? 'selected' : '' .'>'.$y.'</option>';
+                                if ($y == $x) {
+                                    echo '<option value="'.$y.'" selected>'.$y.'</option>';
+                                } else {
+                                   echo '<option value="'.$y.'">'.$y.'</option>';
+                                }
                             }
                         ?>
                     </select>

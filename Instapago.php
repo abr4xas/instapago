@@ -31,12 +31,12 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 
 function register_plugin_styles() {
-  wp_register_style( 'instapago-plugin-styles', plugins_url( 'assets/css/style.css', __FILE__ ) );
-  // Hay que prograpar la funcion localize script para que funcione correctamente
-  //wp_register_script( 'instapago-plugin-script', plugins_url( 'assets/js/main.js', __FILE__ ) );
+    wp_register_style( 'instapago-plugin-styles', plugins_url( 'assets/css/style.css', __FILE__ ) );
+    // Hay que prograpar la funcion localize script para que funcione correctamente
+    //wp_register_script( 'instapago-plugin-script', plugins_url( 'assets/js/main.js', __FILE__ ) );
 
-  wp_enqueue_style( 'instapago-plugin-styles' );
-  //wp_enqueue_script( 'instapago-plugin-script' );
+    wp_enqueue_style( 'instapago-plugin-styles' );
+    //wp_enqueue_script( 'instapago-plugin-script' );
 }
 
 // Add custom action links
@@ -62,7 +62,7 @@ function instapago_action_links($links)
  */
 function add_instapago_class($methods)
 {
-    $methods[] = 'WC_Gateway_Instapago_Commerce';
+    $methods[ ] = 'WC_Gateway_Instapago_Commerce';
 
     return $methods;
 }
@@ -121,12 +121,12 @@ function init_instapago_class()
             $this->headerMail       = $this->get_option('mail_header');
             $this->subheaderMail    = $this->get_option('mail_subheader');
 
-            $this->msg['message']   = '';
-            $this->msg['class']     = '';
+            $this->msg[ 'message' ]   = '';
+            $this->msg[ 'class' ]     = '';
             //Save hook
-            add_action('woocommerce_update_options_payment_gateways_'.$this->id, [$this, 'process_admin_options']);
-            add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'finalize_order'], 0);
-            add_action('woocommerce_receipt_lamdaprocessing', [&$this, 'receipt_page']);
+            add_action('woocommerce_update_options_payment_gateways_'.$this->id, [ $this, 'process_admin_options' ]);
+            add_action('woocommerce_receipt_lamdaprocessing', [ &$this, 'finalize_order' ], 0);
+            add_action('woocommerce_receipt_lamdaprocessing', [ &$this, 'receipt_page' ]);
         }
 
         /**
@@ -174,12 +174,12 @@ function init_instapago_class()
         {
             global $woocommerce;
             $order          = wc_get_order($order_id);
-            $cardHolder     = strip_tags(trim($_POST['card_holder_name']));
-            $cardHolderId   = strip_tags(trim($_POST['user_dni']));
-            $cardNumber     = strip_tags(trim($_POST['valid_card_number']));
-            $cvc            = strip_tags(trim($_POST['cvc_code']));
-            $exp_month      = strip_tags(trim($_POST['exp_month']));
-            $exp_year       = strip_tags(trim($_POST['exp_year']));
+            $cardHolder     = strip_tags(trim($_POST[ 'card_holder_name' ]));
+            $cardHolderId   = strip_tags(trim($_POST[ 'user_dni' ]));
+            $cardNumber     = strip_tags(trim($_POST[ 'valid_card_number' ]));
+            $cvc            = strip_tags(trim($_POST[ 'cvc_code' ]));
+            $exp_month      = strip_tags(trim($_POST[ 'exp_month' ]));
+            $exp_year       = strip_tags(trim($_POST[ 'exp_year' ]));
             $expirationDate = $exp_month.'/'.$exp_year;
 
             $paymentData = [
@@ -190,16 +190,16 @@ function init_instapago_class()
                 'card_number'       => $cardNumber,
                 'cvc'               => $cvc,
                 'expiration'        => $expirationDate,
-                'ip'                => $_SERVER['REMOTE_ADDR'],
+                'ip'                => $_SERVER[ 'REMOTE_ADDR' ],
             ];
-            try{
+            try {
 
-                $api = new Api($this->keyId,$this->publicKeyId);
+                $api = new Api($this->keyId, $this->publicKeyId);
 
                 $respuesta = $api->directPayment($paymentData);
                 
                 $order->payment_complete();
-                $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$respuesta['msg_banco'].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$respuesta['id_pago'].'</strong><br/>Referencia Bancaria: <br/><strong>'.$respuesta['reference'].'</strong>', 'woothemes'));
+                $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$respuesta[ 'msg_banco' ].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$respuesta[ 'id_pago' ].'</strong><br/>Referencia Bancaria: <br/><strong>'.$respuesta[ 'reference' ].'</strong>', 'woothemes'));
     
                 if ($this->debug == 'yes') {
                     $logger = wc_get_logger();
@@ -211,10 +211,10 @@ function init_instapago_class()
                     file_put_contents(dirname(__FILE__).'/data.log', print_r($respuesta, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
                 }
     
-                update_post_meta($order_id, 'instapago_voucher', $respuesta['voucher']);
-                update_post_meta($order_id, 'instapago_bank_ref', $respuesta['reference']);
-                update_post_meta($order_id, 'instapago_id_payment', $respuesta['id_pago']);
-                update_post_meta($order_id, 'instapago_bank_msg', $respuesta['msg_banco']);
+                update_post_meta($order_id, 'instapago_voucher', $respuesta[ 'voucher' ]);
+                update_post_meta($order_id, 'instapago_bank_ref', $respuesta[ 'reference' ]);
+                update_post_meta($order_id, 'instapago_id_payment', $respuesta[ 'id_pago' ]);
+                update_post_meta($order_id, 'instapago_bank_msg', $respuesta[ 'msg_banco' ]);
     
                 // Mark as complete
                 $order->update_status('completed');
@@ -230,17 +230,17 @@ function init_instapago_class()
                     'result'      => 'success',
                     'redirect'    => $this->get_return_url($order),
                 ];              
-            }catch(\Instapago\Exceptions\InstapagoException $e){
+            } catch (\Instapago\Exceptions\InstapagoException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
-            }catch(\Instapago\Exceptions\AuthException $e){
+            } catch (\Instapago\Exceptions\AuthException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
-            }catch(\Instapago\Exceptions\BankRejectException $e){
+            } catch (\Instapago\Exceptions\BankRejectException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
-            }catch(\Instapago\Exceptions\InvalidInputException $e){
+            } catch (\Instapago\Exceptions\InvalidInputException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
-            }catch(\Instapago\Exceptions\TimeoutException $e){
+            } catch (\Instapago\Exceptions\TimeoutException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
-            }catch(\Instapago\Exceptions\ValidationException $e){
+            } catch (\Instapago\Exceptions\ValidationException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
             }
         }

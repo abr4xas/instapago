@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /vendor
 /node_modules
 /storage/*.index
@@ -17,3 +18,10 @@ npm-debug.log
 *.cache
 prefill.php
 *.log
+=======
+*.log
+prepros.cfg
+prepros-6.config
+/bower_components/
+/node_modules/
+>>>>>>> tavomak-master

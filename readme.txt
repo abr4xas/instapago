@@ -3,9 +3,9 @@
 Contributors: abr4xas
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=webmaster%40abr4xas%2eorg&lc=VE&no_note=1&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
-Requires at least: 4.6
-Tested up to: 4.7
-Stable tag: 2.1.0
+Requires at least: 4.8
+Tested up to: 4.9.1
+Stable tag: 3.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,9 @@ Upload the plugin files to the `/wp-content/plugins/instapago` directory, or ins
 * Certificate your website on Instapago sending a email to soporte@instapago.com and swith your account to production Mode.
 * Get "Llave Publica" and "Llave Privada" for production mode (Modo de Producción).
 
+= Voucher = 
+
+Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER 
 
 == Screenshots ==
 

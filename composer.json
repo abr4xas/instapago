@@ -1,0 +1,5 @@
+{
+    "require": {
+        "instapago/instapago": "^3.0"
+    }
+}

@@ -33,7 +33,7 @@ $breakpoints: (
   &--name {
     width: 100%;
     @include MQ(609px) {
-      width: 50%;
+      width: 100%;
     }
   }
   &--tipe {
@@ -43,7 +43,7 @@ $breakpoints: (
       width: 19%;
     }
     @include MQ(609px) {
-      width: 10%;
+      width: 20%;
     }
   }
   &--id {
@@ -52,23 +52,19 @@ $breakpoints: (
       width: 80%;
     }
     @include MQ(609px) {
-<<<<<<< HEAD
-      width: 38%;
-=======
-      width: 39%;
->>>>>>> 8913cd6f2b6292503e47cd65f5af53de839d7d61
+      width: 79%;
     }
   }
   &--tdc-number {
     width: 100%;
     @include MQ(609px) {
-      width: 60.3%;
+      width: 100%;
     }
   }
   &--ccv {
     width: 100%;
     @include MQ(609px) {
-      width: 20%;
+      width: 40%;
     }
   }
   &--txt-help {
@@ -82,7 +78,7 @@ $breakpoints: (
   display: none;
   @include MQ(609px) {
     display: inline-block;
-    width: 15%;
+    width: 30%;
   }
 }
 

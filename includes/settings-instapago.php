@@ -56,18 +56,6 @@ return [
         'desc_tip'    => true,
         'placeholder' => __('Requerido', 'woocommerce'),
     ],
-    'paymentaction' => [
-        'title'       => __('Payment Action', 'woocommerce'),
-        'type'        => 'select',
-        'class'       => 'wc-enhanced-select',
-        'description' => __('Debe indicar si desea retener o autorizar el pago.', 'woocommerce'),
-        'default'     => '2',
-        'desc_tip'    => true,
-        'options'     => [
-            '1'          => __('Retener (pre-autorización)', 'woocommerce'),
-            '2'          => __('Pagar (autorización).', 'woocommerce'),
-        ],
-    ],
     'api_debug' => [
         'title'       => __('Modo de depuración', 'woocommerce'),
         'type'        => 'title',

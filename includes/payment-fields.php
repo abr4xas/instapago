@@ -50,36 +50,38 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
             <div class="tdc-logos">
               <img src="<?php echo plugins_url('instapago/assets/images/instapago-visa-mastercard.png'); ?>" class="instapago-img" alt="Número de Tarjeta">
               <?php //class="img-responsive visa-mastercard help" eliminadas para evitar conflictos de clases css?>
-            </div>
+            </div></br>
 
-                <select id="exp_month" class="instapago-form--select instapago-form--exp-month" name="exp_month" tabindex="6">
-                  <?php //class="field select medium " eliminadas para evitar conflictos de clases css?>
-                        <option value="-1">Mes</option>
-                    <?php
-                        $months = [
-                            '01'=> '01',
-                            '02'=> '02',
-                            '03'=> '03',
-                            '04'=> '04',
-                            '05'=> '05',
-                            '06'=> '06',
-                            '07'=> '07',
-                            '08'=> '08',
-                            '09'=> '09',
-                            '10'=> '10',
-                            '11'=> '11',
-                            '12'=> '12',
-                        ];
-                        foreach ($months as $mes=>$cod_mes) {
-                            $m = date('m');
-                            if ($mes == $m) {
-                                echo '<option value="'.$cod_mes.'" selected>'.$mes.'</option>';
-                            } else {
-                                echo '<option value="'.$cod_mes.'">'.$mes.'</option>';
-                            }
+            <p class="instapago-form--txt-help">Fecha de vencimiento</p>
+            </br>
+            <select id="exp_month" class="instapago-form--select instapago-form--exp-month" name="exp_month" tabindex="6">
+                <?php //class="field select medium " eliminadas para evitar conflictos de clases css?>
+                <option value="-1">Mes</option>
+                <?php
+                    $months = [
+                        '01' => '01',
+                        '02' => '02',
+                        '03' => '03',
+                        '04' => '04',
+                        '05' => '05',
+                        '06' => '06',
+                        '07' => '07',
+                        '08' => '08',
+                        '09' => '09',
+                        '10' => '10',
+                        '11' => '11',
+                        '12' => '12',
+                    ];
+                    foreach ($months as $mes => $codMes) {
+                        $mesActual = date('m');
+                        if ($mes == $mesActual) {
+                            echo '<option value="'.$codMes.'" selected>'.$mes.'</option>';
+                        } else {
+                            echo '<option value="'.$codMes.'">'.$mes.'</option>';
                         }
-                    ?>
-                    </select>
+                    }
+                ?>
+           </select>
 
 
                 <select id="exp_year" class="instapago-form--select instapago-form--exp-year" name="exp_year" tabindex="7">
@@ -90,17 +92,16 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                             Utilizar la funcion date limita el uso de tarjetas emitidas en el año en curso del sistema operativo,
                             con un rango de 10 años se asegura el uso de tarjetas vijentes.
                             */
-                            for ($y = 2010; $y <= 2017 + 10; $y++) {
+                            for ($y = 2010; $y <= 2018 + 10; $y++) {
                                 $x = date('Y');
                                 if ($y == $x) {
                                     echo '<option value="'.$y.'" selected>'.$y.'</option>';
                                 } else {
-                                    echo '<option value="'.$y.'">'.$y.'</option>';
+                                   echo '<option value="'.$y.'">'.$y.'</option>';
                                 }
                             }
                         ?>
                     </select>
-                    <p class="instapago-form--txt-help">Fecha de vencimiento</p>
 
             <br>
             <div class="instapago-copy instapago-text-center">
@@ -116,9 +117,6 @@ Angel Cruz <me@abr4xas.org>
 (http://abr4xas.org)
 https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
 -->
-<<<<<<< HEAD
-<script src="<?php echo plugins_url('instapago/assets/js/main.js'); ?>"></script>
-=======
 <script type="text/javascript">
 	jQuery('#instapago_cchname').keypress(function(){
         if (jQuery(this).val().length < 1 ) {
@@ -153,4 +151,3 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
         }
     });
 </script>
->>>>>>> 8913cd6f2b6292503e47cd65f5af53de839d7d61

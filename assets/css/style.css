@@ -60,7 +60,7 @@
 @media screen and (min-width: 609px) {
   /* line 49, assets/scss/style.scss */
   .instapago-form--id {
-    width: 39%;
+    width: 79%;
   }
 }
 
@@ -72,7 +72,7 @@
 @media screen and (min-width: 609px) {
   /* line 58, assets/scss/style.scss */
   .instapago-form--tdc-number {
-    width: 80%;
+    width: 100%;
   }
 }
 
@@ -84,7 +84,7 @@
 @media screen and (min-width: 609px) {
   /* line 64, assets/scss/style.scss */
   .instapago-form--ccv {
-    width: 20%;
+    width: 40%;
   }
 }
 
@@ -104,7 +104,7 @@
   /* line 77, assets/scss/style.scss */
   .tdc-logos {
     display: inline-block;
-    width: 15%;
+    width: 30%;
   }
 }
 

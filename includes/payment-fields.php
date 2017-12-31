@@ -50,36 +50,38 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
             <div class="tdc-logos">
               <img src="<?php echo plugins_url('instapago/assets/images/instapago-visa-mastercard.png'); ?>" class="instapago-img" alt="Número de Tarjeta">
               <?php //class="img-responsive visa-mastercard help" eliminadas para evitar conflictos de clases css?>
-            </div>
+            </div></br>
 
-                <select id="exp_month" class="instapago-form--select instapago-form--exp-month" name="exp_month" tabindex="6">
-                  <?php //class="field select medium " eliminadas para evitar conflictos de clases css?>
-                        <option value="-1">Mes</option>
-                    <?php
-                        $months = [
-                            '01' => '01',
-                            '02' => '02',
-                            '03' => '03',
-                            '04' => '04',
-                            '05' => '05',
-                            '06' => '06',
-                            '07' => '07',
-                            '08' => '08',
-                            '09' => '09',
-                            '10' => '10',
-                            '11' => '11',
-                            '12' => '12',
-                        ];
-                        foreach ($months as $mes => $codMes) {
-                            $mesActual = date('m');
-                            if ($mes == $mesActual) {
-                                echo '<option value="'.$codMes.'" selected>'.$mes.'</option>';
-                            } else {
-                                echo '<option value="'.$codMes.'">'.$mes.'</option>';
-                            }
-                         }
-                    ?>
-                    </select>
+            <p class="instapago-form--txt-help">Fecha de vencimiento</p>
+            </br>
+            <select id="exp_month" class="instapago-form--select instapago-form--exp-month" name="exp_month" tabindex="6">
+                <?php //class="field select medium " eliminadas para evitar conflictos de clases css?>
+                <option value="-1">Mes</option>
+                <?php
+                    $months = [
+                        '01' => '01',
+                        '02' => '02',
+                        '03' => '03',
+                        '04' => '04',
+                        '05' => '05',
+                        '06' => '06',
+                        '07' => '07',
+                        '08' => '08',
+                        '09' => '09',
+                        '10' => '10',
+                        '11' => '11',
+                        '12' => '12',
+                    ];
+                    foreach ($months as $mes => $codMes) {
+                        $mesActual = date('m');
+                        if ($mes == $mesActual) {
+                            echo '<option value="'.$codMes.'" selected>'.$mes.'</option>';
+                        } else {
+                            echo '<option value="'.$codMes.'">'.$mes.'</option>';
+                        }
+                    }
+                ?>
+           </select>
 
 
                 <select id="exp_year" class="instapago-form--select instapago-form--exp-year" name="exp_year" tabindex="7">
@@ -100,7 +102,6 @@ https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommer
                             }
                         ?>
                     </select>
-                    <p class="instapago-form--txt-help">Fecha de vencimiento</p>
 
             <br>
             <div class="instapago-copy instapago-text-center">

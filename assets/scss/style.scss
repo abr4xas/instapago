@@ -52,19 +52,19 @@ $breakpoints: (
       width: 80%;
     }
     @include MQ(609px) {
-      width: 39%;
+      width: 79%;
     }
   }
   &--tdc-number {
     width: 100%;
     @include MQ(609px) {
-      width: 80%;
+      width: 100%;
     }
   }
   &--ccv {
     width: 100%;
     @include MQ(609px) {
-      width: 20%;
+      width: 40%;
     }
   }
   &--txt-help {
@@ -78,7 +78,7 @@ $breakpoints: (
   display: none;
   @include MQ(609px) {
     display: inline-block;
-    width: 15%;
+    width: 30%;
   }
 }
 

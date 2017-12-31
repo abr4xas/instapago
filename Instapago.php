@@ -27,7 +27,11 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 
 function register_plugin_styles() {
+<<<<<<< HEAD
   wp_register_style( 'instapago-plugin-styles', plugins_url( 'assets/css/style-dist.css', __FILE__ ) );
+=======
+  wp_register_style( 'instapago-plugin-styles', plugins_url( 'assets/css/style.css', __FILE__ ) );
+>>>>>>> 8913cd6f2b6292503e47cd65f5af53de839d7d61
   // Hay que prograpar la funcion localize script para que funcione correctamente
   //wp_register_script( 'instapago-plugin-script', plugins_url( 'assets/js/main.js', __FILE__ ) );
 

@@ -52,7 +52,11 @@ $breakpoints: (
       width: 80%;
     }
     @include MQ(609px) {
+<<<<<<< HEAD
       width: 38%;
+=======
+      width: 39%;
+>>>>>>> 8913cd6f2b6292503e47cd65f5af53de839d7d61
     }
   }
   &--tdc-number {

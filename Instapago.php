@@ -62,7 +62,7 @@ function instapago_action_links($links)
  */
 function add_instapago_class($methods)
 {
-    $methods[] = 'WC_Gateway_Instapago_Commerce';
+    $methods[ ] = 'WC_Gateway_Instapago_Commerce';
 
     return $methods;
 }

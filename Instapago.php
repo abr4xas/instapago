@@ -4,11 +4,11 @@
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 3.0.0
+ * Version: 4.0.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
- * Requires at least: 4.8
- * Tested up to: 4.9.1
+ * Requires at least: 4.9.6
+ * Tested up to: 5.0.2
  *
  * @category Admin
  *
@@ -28,14 +28,15 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
     return;
 }
 // Register style
-add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
+add_action('wp_enqueue_scripts', 'register_plugin_styles');
 
-function register_plugin_styles() {
-    wp_register_style( 'instapago-plugin-styles', plugins_url( 'assets/css/style.css', __FILE__ ) );
+function register_plugin_styles()
+{
+    wp_register_style('instapago-plugin-styles', plugins_url('assets/css/style.css', __FILE__));
     // Hay que prograpar la funcion localize script para que funcione correctamente
     //wp_register_script( 'instapago-plugin-script', plugins_url( 'assets/js/main.js', __FILE__ ) );
 
-    wp_enqueue_style( 'instapago-plugin-styles' );
+    wp_enqueue_style('instapago-plugin-styles');
     //wp_enqueue_script( 'instapago-plugin-script' );
 }
 
@@ -193,7 +194,6 @@ function init_instapago_class()
                 'ip'                => $_SERVER[ 'REMOTE_ADDR' ],
             ];
             try {
-
                 $api = new Api($this->keyId, $this->publicKeyId);
 
                 $respuesta = $api->directPayment($paymentData);
@@ -202,12 +202,12 @@ function init_instapago_class()
                 $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$respuesta[ 'msg_banco' ].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$respuesta[ 'id_pago' ].'</strong><br/>Referencia Bancaria: <br/><strong>'.$respuesta[ 'reference' ].'</strong>', 'woothemes'));
     
                 if ($this->debug == 'yes') {
-                    $logger = wc_get_logger();
-    
+                    $logger = wc_get_logger();    
                     $context = [
                         'source' => 'instapago',
                     ];
-                    $logger->log('info', 'Se ha procesado un pago', $context);
+                    $logger->log('info', 'Se ha procesado un pago', $respuesta);
+                    $logger->log('info', print_r($respuesta, true), $context);
                     file_put_contents(dirname(__FILE__).'/data.log', print_r($respuesta, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
                 }
     
@@ -215,6 +215,9 @@ function init_instapago_class()
                 update_post_meta($order_id, 'instapago_bank_ref', $respuesta[ 'reference' ]);
                 update_post_meta($order_id, 'instapago_id_payment', $respuesta[ 'id_pago' ]);
                 update_post_meta($order_id, 'instapago_bank_msg', $respuesta[ 'msg_banco' ]);
+                update_post_meta($order_id, 'instapago_sequence', $respuesta[ 'original_response' ][ 'sequence' ]);
+                update_post_meta($order_id, 'instapago_approval', $respuesta[ 'original_response' ][ 'approval' ]);
+                update_post_meta($order_id, 'instapago_lote', $respuesta[ 'original_response' ][ 'lote' ]);
     
                 // Mark as complete
                 $order->update_status('completed');
@@ -229,7 +232,7 @@ function init_instapago_class()
                 return [
                     'result'      => 'success',
                     'redirect'    => $this->get_return_url($order),
-                ];              
+                ];
             } catch (\Instapago\Exceptions\InstapagoException $e) {
                 throw new \Exception($e->getMessage()); // manejar el error
             } catch (\Instapago\Exceptions\AuthException $e) {

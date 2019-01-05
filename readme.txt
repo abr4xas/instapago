@@ -3,9 +3,9 @@
 Contributors: abr4xas
 Donate link: https://www.paypal.me/abr4xas
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
-Requires at least: 4.8
+Requires at least: 4.9.6
 Tested up to: 4.9.6
-Stable tag: 3.0.1
+Stable tag:4.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

@@ -40,6 +40,7 @@ Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER
 1. Main View.
 2. Responsive View.
 3. Settings.
+4. Other Settings.
 
 == Changelog ==
 

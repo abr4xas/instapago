@@ -3,9 +3,9 @@
 Contributors: abr4xas
 Donate link: https://www.paypal.me/abr4xas
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
-Requires at least: 4.9.6
-Tested up to: 4.9.6
-Stable tag:4.0.0
+Requires at least: 5.2.1
+Tested up to: 5.2.2
+Stable tag:5.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,19 +31,21 @@ Upload the plugin files to the `/wp-content/plugins/instapago` directory, or ins
 * Certificate your website on Instapago sending a email to soporte@instapago.com and swith your account to production Mode.
 * Get "Llave Publica" and "Llave Privada" for production mode (Modo de Producción).
 
-= Voucher = 
+= Voucher =
 
-Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER 
+Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER
 
 == Screenshots ==
 
 1. Main View.
 2. Responsive View.
 3. Settings.
-4. Other Settings.
 
 == Changelog ==
 
+* actualizado soporte a WordPress
+* Fix error log
+* Envio de voucher por correo
 * Agrega mejoras en el responsive propuestas por Andres Vasquez
 * Se solucionan errores con funciones deprecadas en la versión 3.0 de Woocommerce
 * Se elimina envio de voucher por correo

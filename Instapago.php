@@ -4,7 +4,7 @@
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 5.0.0
+ * Version: 5.2.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
  * Requires at least: 5.2.1
@@ -18,10 +18,6 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-
-require 'vendor/autoload.php';
-
-use \Instapago\Api;
 
 // Make sure WooCommerce is active
 if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
@@ -80,7 +76,7 @@ include_once ABSPATH.WPINC.'/class-phpmailer.php';
  *
  * @class 		WC_Gateway_Instapago_Commerce
  * @extends		WC_Payment_Gateway
- * @version		5.0.0
+ * @version		5.0.1
  * @package		WooCommerce/Classes/Payment
  * @author 		Angel Cruz
  */
@@ -95,7 +91,7 @@ function init_instapago_class()
          *
          * @var string
          */
-        public $version = '5.0.0';
+        public $version = '5.0.1';
 
         /**
          * Constructor for the gateway.
@@ -174,6 +170,7 @@ function init_instapago_class()
         public function process_payment($order_id)
         {
             global $woocommerce;
+            $url            = 'https://api.instapago.com/payment';
             $order          = wc_get_order($order_id);
             $cardHolder     = strip_tags(trim($_POST[ 'card_holder_name' ]));
             $cardHolderId   = strip_tags(trim($_POST[ 'user_dni' ]));
@@ -183,41 +180,46 @@ function init_instapago_class()
             $exp_year       = strip_tags(trim($_POST[ 'exp_year' ]));
             $expirationDate = $exp_month.'/'.$exp_year;
 
-            $paymentData = [
-                'amount'            => $order->get_total(),
-                'description'       => 'Generating payment for order #'.$order->get_order_number(),
-                'card_holder'       => $cardHolder,
-                'card_holder_id'    => $cardHolderId,
-                'card_number'       => $cardNumber,
-                'cvc'               => $cvc,
-                'expiration'        => $expirationDate,
-                'ip'                => $_SERVER[ 'REMOTE_ADDR' ],
+            $fields = [
+                'KeyID'          => $this->keyId, //required
+                'PublicKeyId'    => $this->publicKeyId, //required
+                'Amount'         => $order->get_total(), //required
+                'Description'    => 'Generating payment for order #'.$order->get_order_number(), //required
+                'CardHolder'     => $cardHolder, //required
+                'CardHolderId'   => $cardHolderId, //required
+                'CardNumber'     => $cardNumber, //required
+                'CVC'            => $cvc, //required
+                'ExpirationDate' => $expirationDate, //required
+                'StatusId'       => 2, //required
+                'IP'             => $_SERVER['REMOTE_ADDR'], //required
             ];
-            try {
-                $api = new Api($this->keyId, $this->publicKeyId);
 
-                $respuesta = $api->directPayment($paymentData);
+            $obj = $this->curlTransaccion($url, $fields);
+            $result = $this->checkResponseCode($obj);
+
+            if ($result['code'] == 201) {
+                // Payment received and stock has been reduced
 
                 $order->payment_complete();
-                $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$respuesta[ 'msg_banco' ].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$respuesta[ 'id_pago' ].'</strong><br/>Referencia Bancaria: <br/><strong>'.$respuesta[ 'reference' ].'</strong>', 'woothemes'));
+                $order->add_order_note(__('Mensaje del Banco:<br/> <strong>'.$result[ 'msg_banco' ].'</strong><br/> Número de Identificación del Pago:<br/><strong>'.$result[ 'id_pago' ].'</strong><br/>Referencia Bancaria: <br/><strong>'.$result[ 'reference' ].'</strong>', 'woothemes'));
 
                 if ($this->debug == 'yes') {
                     $logger = wc_get_logger();
                     $context = [
                         'source' => 'instapago',
                     ];
-                    $logger->log('info', 'Se ha procesado un pago', $respuesta);
-                    $logger->log('info', print_r($respuesta, true), $context);
-                    file_put_contents(dirname(__FILE__).'/data.log', print_r($respuesta, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
+                    $logger->log('info', 'Se ha procesado un pago', $result);
+                    $logger->log('info', print_r($result, true), $context);
+                    file_put_contents(dirname(__FILE__).'/data.log', print_r($result, true)."\n\n".'======================'."\n\n", FILE_APPEND | LOCK_EX);
                 }
 
-                update_post_meta($order_id, 'instapago_voucher', $respuesta[ 'voucher' ]);
-                update_post_meta($order_id, 'instapago_bank_ref', $respuesta[ 'reference' ]);
-                update_post_meta($order_id, 'instapago_id_payment', $respuesta[ 'id_pago' ]);
-                update_post_meta($order_id, 'instapago_bank_msg', $respuesta[ 'msg_banco' ]);
-                update_post_meta($order_id, 'instapago_sequence', $respuesta[ 'original_response' ][ 'sequence' ]);
-                update_post_meta($order_id, 'instapago_approval', $respuesta[ 'original_response' ][ 'approval' ]);
-                update_post_meta($order_id, 'instapago_lote', $respuesta[ 'original_response' ][ 'lote' ]);
+                update_post_meta($order_id, 'instapago_voucher', $result[ 'voucher' ]);
+                update_post_meta($order_id, 'instapago_bank_ref', $result[ 'reference' ]);
+                update_post_meta($order_id, 'instapago_id_payment', $result[ 'id_pago' ]);
+                update_post_meta($order_id, 'instapago_bank_msg', $result[ 'msg_banco' ]);
+                update_post_meta($order_id, 'instapago_sequence', $result[ 'sequence' ]);
+                update_post_meta($order_id, 'instapago_approval', $result[ 'approval' ]);
+                update_post_meta($order_id, 'instapago_lote', $result[ 'lote' ]);
 
                 // Mark as complete
                 $order->update_status('completed');
@@ -229,21 +231,17 @@ function init_instapago_class()
                 WC()->cart->empty_cart();
 
                 // Set vars
-                $adminEmail = get_option('admin_email', '');
-                $siteUrl    = get_site_url();
-                $sender     = get_bloginfo('name', 'display');
-                $customerEmail = $order->billing_email;
-                $customerName = $order->last_name.' '.$order->first_name;
-                $voucher = $result['voucher'];
-                $headerMail = $this->headerMail;
-                $subheaderMail = $this->subheaderMail;
-                $copyfooter = '';
-                update_post_meta($order->id, 'instapago_voucher', $voucher);
-                if ($img = get_option('woocommerce_email_header_image')) {
-                    $logoCorreo = '<a target="_blank" style="text-decoration: none;" href="'. $siteUrl .'"><img border="0" vspace="0" hspace="0" src="' . esc_url($img) . '" alt="' . get_bloginfo('name', 'display') . '" title="' . get_bloginfo('name', 'display') . '" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>';
-                } else {
-                    $logoCorreo ='';
-                }
+                $adminEmail     = get_option('admin_email', '');
+                $siteUrl        = get_site_url();
+                $sender         = get_bloginfo('name', 'display');
+                $customerEmail  = $order->get_billing_email();
+                $customerName   = $order->get_billing_first_name().' '.$order->get_billing_last_name();
+                $voucher        = $result['voucher'];
+                $headerMail     = $this->headerMail;
+                $subheaderMail  = $this->subheaderMail;
+                $copyfooter     = '';
+
+                $logoCorreo = (get_option('woocommerce_email_header_image')) ? '<a target="_blank" style="text-decoration: none;" href="'. $siteUrl .'"><img border="0" vspace="0" hspace="0" src="' . esc_url(get_option('woocommerce_email_header_image')) . '" alt="' . get_bloginfo('name', 'display') . '" title="' . get_bloginfo('name', 'display') . '" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>' : '';
                 // Retrieve the email template required
                 $message = file_get_contents('email.html', dirname(__FILE__));
                 // Replace the % with the actual information
@@ -257,7 +255,7 @@ function init_instapago_class()
                 $wpBlogName     = $sender;
                 $customer       = $customerEmail;
                 $customSubject  = 'Recibo de tu pedido en ';
-                $customMsg = $message;
+                $customMsg      = $message;
                 $this->SendCustomEmail($wpAdmin, $wpBlogName, $customer, $customSubject, $customMsg);
 
                 // Return thankyou redirect
@@ -265,23 +263,79 @@ function init_instapago_class()
                     'result'      => 'success',
                     'redirect'    => $this->get_return_url($order),
                 ];
-            } catch (\Instapago\Exceptions\InstapagoException $e) {
-                throw new \Exception($e->getMessage()); // manejar el error
-            } catch (\Instapago\Exceptions\AuthException $e) {
-                throw new \Exception($e->getMessage()); // manejar el error
-            } catch (\Instapago\Exceptions\BankRejectException $e) {
-                throw new \Exception($e->getMessage()); // manejar el error
-            } catch (\Instapago\Exceptions\InvalidInputException $e) {
-                throw new \Exception($e->getMessage()); // manejar el error
-            } catch (\Instapago\Exceptions\TimeoutException $e) {
-                throw new \Exception($e->getMessage()); // manejar el error
-            } catch (\Instapago\Exceptions\ValidationException $e) {
-                throw new \Exception($e->getMessage()); // manejar el error
             }
+        }
+        /**
+         * Realiza Transaccion
+         * Efectúa y retornar una respuesta a un metodo de pago.
+         *
+         * @param string $url endpoint a consultar
+         * @param $fields datos para la consulta
+         *
+         * @return $obj array resultados de la transaccion
+         *              https://github.com/abr4xas/php-instapago/blob/master/help/DOCUMENTACION.md#PENDIENTE
+         */
+        public function curlTransaccion($url, $fields)
+        {
+            $myCurl = curl_init();
+            curl_setopt($myCurl, CURLOPT_URL, $url);
+            curl_setopt($myCurl, CURLOPT_POST, 1);
+            curl_setopt($myCurl, CURLOPT_POSTFIELDS, http_build_query($fields));
+            curl_setopt($myCurl, CURLOPT_RETURNTRANSFER, true);
+            $server_output = curl_exec($myCurl);
+            curl_close($myCurl);
+            $obj = json_decode($server_output);
+
+            return $obj;
         }
 
         /**
-         * Undocumented function
+         * Verifica Codigo de Estado de transaccion
+         * Verifica y retornar el resultado de la transaccion.
+         *
+         * @param $obj datos de la consulta
+         *
+         * @return $result array datos de transaccion
+         *                 https://github.com/abr4xas/php-instapago/blob/master/help/DOCUMENTACION.md#PENDIENTE
+         */
+        public function checkResponseCode($obj)
+        {
+            $code = $obj->code;
+            switch ($code) {
+                case 400:
+                    throw new \Exception('Error al validar los datos enviados.');
+                    break;
+                case 401:
+                    throw new \Exception('Error de autenticación, ha ocurrido un error con las llaves utilizadas.');
+                    break;
+                case 403:
+                    throw new \Exception('Pago Rechazado por el banco.');
+                    break;
+                case 500:
+                    throw new \Exception('Ha Ocurrido un error interno dentro del servidor.');
+                    break;
+                case 503:
+                    throw new \Exception('Ha Ocurrido un error al procesar los parámetros de entrada. Revise los datos enviados y vuelva a intentarlo.');
+                    break;
+                case 201:
+                    return [
+                        'code'      => $code,
+                        'msg_banco' => $obj->message,
+                        'voucher'   => html_entity_decode($obj->voucher),
+                        'id_pago'   => $obj->id,
+                        'reference' => $obj->reference,
+                        'sequence'  => $obj->sequence,
+                        'approval'  => $obj->approval,
+                        'lote'      => $obj->lote,
+                    ];
+                    break;
+                default:
+                    throw new \Exception('Error general...');
+                    break;
+            }
+        }
+        /**
+         * SendCustomEmail
          *
          * @param string $wpAdmin
          * @param string $wpBlogName

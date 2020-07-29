@@ -1,7 +1,7 @@
 === Instapago Payment Gateway for WooCommerce ===
 
 Contributors: abr4xas
-Donate link: https://www.paypal.me/abr4xas
+Donate link:
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
 Requires at least: 5.2.1
 Tested up to: 5.2.2
@@ -43,7 +43,7 @@ Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER
 
 == Changelog ==
 
-* actualizado soporte a WordPress
+* Actualizado soporte a WordPress
 * Fix error log
 * Envio de voucher por correo
 * Agrega mejoras en el responsive propuestas por Andres Vasquez
@@ -53,3 +53,4 @@ Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER
 * Se agrega mas informacion en la orden creada en woocommerce
 * Se modifica numero de version
 * Actualizado el formulario de pago
+* Actualiza PHPMailer

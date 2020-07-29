@@ -67,7 +67,7 @@ function add_instapago_class($methods)
 add_filter('woocommerce_payment_gateways', 'add_instapago_class');
 
 // PHPMailer Class from WP core
-include_once ABSPATH.WPINC.'/class-phpmailer.php';
+include_once ABSPATH.WPINC. '/PHPMailer/PHPMailer.php';
 
 /*
  * Instapago Payment Gateway for WooCommerce
@@ -86,13 +86,6 @@ function init_instapago_class()
 {
     class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
     {
-        /**
-         * WooCommerce version.
-         *
-         * @var string
-         */
-        public $version = '5.0.1';
-
         /**
          * Constructor for the gateway.
          */
@@ -352,7 +345,7 @@ function init_instapago_class()
             $msg            = $customSubject; // custom subject
             $message        = $customMsg; // custom msg
             // Setup PHPMailer
-            $mail = new PHPMailer;
+            $mail = new PHPMailer();
             $mail->isSMTP();
             $mail->SMTPDebug = 2;
             $mail->Debugoutput = 'html';

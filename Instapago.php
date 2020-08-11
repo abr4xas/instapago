@@ -1,19 +1,20 @@
 <?php
+
 /**
  * Plugin Name: Instapago Payment Gateway for WooCommerce
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 5.2.0
+ * Version: 6.0.0
  * Author: Angel Cruz
  * Author URI: http://abr4xas.org
- * Requires at least: 5.2.1
- * Tested up to: 5.2.2
+ * Requires at least: 5.5
+ * Tested up to: 5.5
  *
  * @category Admin
  *
  * @author Angel Cruz
- * @copyright Copyright (C) Angel Cruz <me@abr4xas.org> and WooCommerce
+ * @copyright Copyright (C) Angel Cruz <bullgram@gmail.com> and WooCommerce
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -66,9 +67,6 @@ function add_instapago_class($methods)
 
 add_filter('woocommerce_payment_gateways', 'add_instapago_class');
 
-// PHPMailer Class from WP core
-include_once ABSPATH.WPINC.'/class-phpmailer.php';
-
 /*
  * Instapago Payment Gateway for WooCommerce
  *
@@ -86,13 +84,6 @@ function init_instapago_class()
 {
     class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
     {
-        /**
-         * WooCommerce version.
-         *
-         * @var string
-         */
-        public $version = '5.0.1';
-
         /**
          * Constructor for the gateway.
          */
@@ -332,50 +323,6 @@ function init_instapago_class()
                 default:
                     throw new \Exception('Error general...');
                     break;
-            }
-        }
-        /**
-         * SendCustomEmail
-         *
-         * @param string $wpAdmin
-         * @param string $wpBlogName
-         * @param string $customer
-         * @param string $customSubject
-         * @param string $customMsg
-         * @return void
-         */
-        public function SendCustomEmail($wpAdmin, $wpBlogName, $customer, $customSubject, $customMsg)
-        {
-            $adminEmail     = $wpAdmin; // root admin
-            $sender         = $wpBlogName; // Site name
-            $customerEmail  = $customer; // woocommerce customer email
-            $msg            = $customSubject; // custom subject
-            $message        = $customMsg; // custom msg
-            // Setup PHPMailer
-            $mail = new PHPMailer;
-            $mail->isSMTP();
-            $mail->SMTPDebug = 2;
-            $mail->Debugoutput = 'html';
-            $mail->Host = '127.0.0.1';
-            $mail->Port = 25;
-            $mail->setFrom($adminEmail, $sender);
-            $mail->addAddress($customerEmail);
-            $mail->isHTML(true);
-            $mail->SMTPOptions = [
-                'ssl' => [
-                    'verify_peer'       => false,
-                    'verify_peer_name'  => false,
-                    'allow_self_signed' => true
-                ]
-            ];
-            // Set the subject
-            $mail->Subject = $msg . '' . $sender;
-            //Set the message
-            $mail->MsgHTML($message);
-            // Send the email
-            if (!$mail->Send()) {
-                $logger = wc_get_logger();
-                $logger->log('info', 'Mailer Error: ' . $mail->ErrorInfo);
             }
         }
     } // End WC_Gateway_Instapago_Commerce

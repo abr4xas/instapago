@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Configuración de Instapago.
  *
  * @category Admin
  *
  * @author Angel Cruz
- * @copyright Copyright (C) Angel Cruz <me@abr4xas.org> and WooCommerce
+ * @copyright Copyright (C) Angel Cruz <bullgram@gmail.com> and WooCommerce
  */
 if (!defined('ABSPATH')) {
     exit;

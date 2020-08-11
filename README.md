@@ -1,7 +1,4 @@
-<img align="left" width="130" src="https://blog.abr4xas.org/icons/apple-icon-180x180.png">
-
-
-## Instapago Payment Gateway for WooCommerce
+### Instapago Payment Gateway for WooCommerce
 
 Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
 
@@ -12,8 +9,7 @@ Instapago is a technological solution designed for the market of electronic comm
 ---
 
 * Autor: Angel Cruz
-* Url: http://abr4xas.org
-* Email: me@abr4xas.org
+* Url: http://angelcruz.dev
 * Licencia: GPLv3
 
 

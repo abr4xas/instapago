@@ -9,7 +9,7 @@ Instapago is a technological solution designed for the market of electronic comm
 ---
 
 * Autor: Angel Cruz
-* Url: http://abr4xas.org
+* Url: http://angelcruz.dev
 * Licencia: GPLv3
 
 

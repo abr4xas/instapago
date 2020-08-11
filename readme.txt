@@ -3,9 +3,9 @@
 Contributors: abr4xas
 Donate link:
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
-Requires at least: 5.2.1
-Tested up to: 5.2.2
-Stable tag:5.2.0
+Requires at least: 5.5
+Tested up to: 5.5
+Stable tag:6.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,6 +42,15 @@ Please, read this: https://github.com/abr4xas/instapago/wiki/Capturar-VOUCHER
 3. Settings.
 
 == Changelog ==
+
+= 6.0.0 =
+*Release Date - 11 Ago 2020*
+
+* Desactiva envio de voucher por correo.
+* Agrega mejoras en el código.
+
+
+
 
 * Actualizado soporte a WordPress
 * Fix error log

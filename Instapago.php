@@ -221,34 +221,6 @@ function init_instapago_class()
                 // Remove cart
                 WC()->cart->empty_cart();
 
-                // Set vars
-                $adminEmail     = get_option('admin_email', '');
-                $siteUrl        = get_site_url();
-                $sender         = get_bloginfo('name', 'display');
-                $customerEmail  = $order->get_billing_email();
-                $customerName   = $order->get_billing_first_name().' '.$order->get_billing_last_name();
-                $voucher        = $result['voucher'];
-                $headerMail     = $this->headerMail;
-                $subheaderMail  = $this->subheaderMail;
-                $copyfooter     = '';
-
-                $logoCorreo = (get_option('woocommerce_email_header_image')) ? '<a target="_blank" style="text-decoration: none;" href="'. $siteUrl .'"><img border="0" vspace="0" hspace="0" src="' . esc_url(get_option('woocommerce_email_header_image')) . '" alt="' . get_bloginfo('name', 'display') . '" title="' . get_bloginfo('name', 'display') . '" style="color: #000000;font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a>' : '';
-                // Retrieve the email template required
-                $message = file_get_contents('email.html', dirname(__FILE__));
-                // Replace the % with the actual information
-                $message = str_replace('%logo%', $logoCorreo, $message);
-                $message = str_replace('%headerMail%', $headerMail, $message);
-                $message = str_replace('%subheaderMail%', $subheaderMail, $message);
-                $message = str_replace('%voucher%', $voucher, $message);
-                $message = str_replace('%copyfooter%', $copyfooter, $message);
-                // send voucher
-                $wpAdmin        = $adminEmail;
-                $wpBlogName     = $sender;
-                $customer       = $customerEmail;
-                $customSubject  = 'Recibo de tu pedido en ';
-                $customMsg      = $message;
-                $this->SendCustomEmail($wpAdmin, $wpBlogName, $customer, $customSubject, $customMsg);
-
                 // Return thankyou redirect
                 return [
                     'result'      => 'success',

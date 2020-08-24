@@ -182,13 +182,13 @@ function init_instapago_class()
                 'CVC'            => $cvc, //required
                 'ExpirationDate' => $expirationDate, //required
                 'StatusId'       => 2, //required
-                'IP'             => $_SERVER['REMOTE_ADDR'], //required
+                'IP'             => $_SERVER[ 'REMOTE_ADDR' ], //required
             ];
 
             $obj = $this->curlTransaccion($url, $fields);
             $result = $this->checkResponseCode($obj);
 
-            if ($result['code'] == 201) {
+            if ($result[ 'code' ] == 201) {
                 // Payment received and stock has been reduced
 
                 $order->payment_complete();

@@ -1,11 +1,11 @@
 === Instapago Payment Gateway for WooCommerce ===
 
 Contributors: abr4xas
-Donate link:
+Donate link: https://patreon.com/angelcruzdev
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
 Requires at least: 5.5
 Tested up to: 5.5
-Stable tag:6.0.0
+Stable tag:6.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

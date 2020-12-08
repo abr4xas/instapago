@@ -5,7 +5,7 @@
  * Plugin URI: https://www.behance.net/gallery/37073215/Instapago-Payment-Gateway-for-WooCommerce
  * Description: Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
  * Text Domain: instapago
- * Version: 6.0.1
+ * Version: 6.0.2
  * Author: Angel Cruz
  * Author URI: http://angelcruz.dev
  * Requires at least: 5.5
@@ -182,13 +182,13 @@ function init_instapago_class()
                 'CVC'            => $cvc, //required
                 'ExpirationDate' => $expirationDate, //required
                 'StatusId'       => 2, //required
-                'IP'             => $_SERVER[ 'REMOTE_ADDR' ], //required
+                'IP'             => $_SERVER['REMOTE_ADDR'], //required
             ];
 
             $obj = $this->curlTransaccion($url, $fields);
             $result = $this->checkResponseCode($obj);
 
-            if ($result[ 'code' ] == 201) {
+            if ($result['code'] == 201) {
                 // Payment received and stock has been reduced
 
                 $order->payment_complete();
@@ -211,9 +211,6 @@ function init_instapago_class()
                 update_post_meta($order_id, 'instapago_sequence', $result[ 'sequence' ]);
                 update_post_meta($order_id, 'instapago_approval', $result[ 'approval' ]);
                 update_post_meta($order_id, 'instapago_lote', $result[ 'lote' ]);
-
-                // Mark as complete
-                $order->update_status('completed');
 
                 // Reduce stock levels
                 wc_reduce_stock_levels($order_id);

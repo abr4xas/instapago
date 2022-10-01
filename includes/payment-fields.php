@@ -1,9 +1,3 @@
-<!--
-Plugin desarrollado por:
-Angel Cruz <bullgram@gmail.com>
-(http://abr4xas.org)
-https://angelcruz.dev
--->
 <div class="instapago-form--container">
     <div id="div_cliente">
         <input type="text" id="instapago_cchname" class="instapago-form--input instapago-form--name" name="card_holder_name" tabindex="1" title="Nombre y Apellido del Tarjetahabiente" placeholder="Nombre y Apellido del Tarjetahabiente" autocomplete="off" maxlength="25" onkeyup="this.value=this.value.replace(/[^A-Za-z \u00f1\`]/g, '');">
@@ -70,7 +64,7 @@ https://angelcruz.dev
              * con un rango de 10 años se asegura el uso de tarjetas vijentes.
              */
             $x = date('Y');
-            for ($y = 2010; $y <= 2018 + 10; $y++) {
+            for ($y = 2022; $y <= 2022 + 10; $y++) {
                 $selected = ($y == $x) ? 'selected' : '';
                 echo '<option value="' . $y . '" ' . $selected . '>' . $y . '</option>';
             }
@@ -84,13 +78,6 @@ https://angelcruz.dev
         <img src="<?php echo plugins_url('instapago/assets/images/instapago.png'); ?>" class="instapago-img" alt="Instapago Banesco">
     </div>
 </div>
-
-<!--
-Plugin desarrollado por:
-Angel Cruz <bullgram@gmail.com>
-(http://abr4xas.org)
-https://angelcruz.dev
--->
 <script type="text/javascript">
     jQuery('#instapago_cchname').keypress(function() {
         if (jQuery(this).val().length < 1) {
@@ -139,31 +126,23 @@ https://angelcruz.dev
     }
 
     #instapago_cchname {
-        width: 40%;
-    }
-
-    #Field106 {
-        width: 10%;
+        width: 95%;
+        height: 20px;
     }
 
     #instapago_cchnameid {
-        width: 30%;
+        width: 74%;
+        height: 20px;
     }
 
     #instapago_ccnum {
-        width: 25%;
+        width: 30%;
+        height: 20px;
     }
 
     #instapago_cvv {
-        width: 15%;
-    }
-
-    #exp_month {
-        width: 10%;
-    }
-
-    #exp_year {
-        width: 10%;
+        width: 28%;
+        height: 20px;
     }
 
     @media screen and (max-width: 609px) {

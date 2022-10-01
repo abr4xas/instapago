@@ -1,3 +1,5 @@
+![](https://ps.w.org/instapago/assets/banner-772x250.png)
+
 ### Instapago Payment Gateway for WooCommerce
 
 Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.

@@ -9,14 +9,15 @@
  * that starts the plugin.
  *
  * @link              https://angelcruz.dev
- * @since             7.0.0
+ * @since             8.0.0
  * @package           Instapago
+ * @author     		  Angel Cruz <hello@tepuilabs.dev>
  *
  * @wordpress-plugin
  * Plugin Name:       Instapago Payment Gateway for WooCommerce
  * Plugin URI:        https://angelcruz.dev
  * Description:       Instapago is a technological solution designed for the market of electronic commerce (eCommerce) in Venezuela and Latin America, with the intention of offering a premium product category, which allows people and companies leverage their expansion capabilities, facilitating payment mechanisms for customers with a friendly integration into systems currently used.
- * Version:           7.0.0
+ * Version:           8.0.0
  * Author:            Angel Cruz
  * Author URI:        https://angelcruz.dev/
  * License:           GPL-2.0+
@@ -32,10 +33,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 7.0.0 and use SemVer - https://semver.org
+ * Start at version 8.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'INSTAPAGO_VERSION', '7.0.0' );
+define( 'INSTAPAGO_VERSION', '8.0.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -71,7 +72,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-instapago.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    7.0.0
+ * @since    8.0.0
  */
 function run_instapago() {
 

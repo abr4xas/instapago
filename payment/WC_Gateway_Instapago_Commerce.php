@@ -16,20 +16,10 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 	public bool $debug;
 	public string $paymod;
 
-	/**
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Api    $api    Maintains and registers all hooks for the plugin.
-	 */
-	protected $api;
-
 	private function load_dependencies()
 	{
 
 		require_once plugin_dir_path(dirname(__FILE__)) . 'payment/Api.php';
-
-		$this->api = new Api();
 	}
 
 	/**
@@ -54,7 +44,6 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 		$this->publicKeyId  = $this->get_option('api_publicKeyId');
 		$this->debug = $this->get_option('debug', 'yes');
 		$this->paymod = $this->get_option('paymentaction');
-
 
 		//Save hook
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);

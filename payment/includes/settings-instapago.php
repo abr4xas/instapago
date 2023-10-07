@@ -5,8 +5,8 @@
  *
  * @category Admin
  *
- * @author Angel Cruz
- * @copyright Copyright (C) Angel Cruz <bullgram@gmail.com> and WooCommerce
+ * @author     Angel Cruz <hello@tepuilabs.dev>
+ * @copyright Copyright (C) Angel Cruz <hello@tepuilabs.dev> and WooCommerce
  */
 if (!defined('ABSPATH')) {
 	exit;

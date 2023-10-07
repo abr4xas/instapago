@@ -27,7 +27,8 @@
  * @subpackage Instapago/includes
  * @author     Angel Cruz <hello@tepuilabs.dev>
  */
-class Instapago {
+class Instapago
+{
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -66,8 +67,9 @@ class Instapago {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
-		if ( defined( 'INSTAPAGO_VERSION' ) ) {
+	public function __construct()
+	{
+		if (defined('INSTAPAGO_VERSION')) {
 			$this->version = INSTAPAGO_VERSION;
 		} else {
 			$this->version = '7.0.0';
@@ -78,7 +80,6 @@ class Instapago {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -97,30 +98,31 @@ class Instapago {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies()
+	{
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-instapago-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-instapago-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-instapago-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-instapago-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-instapago-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-instapago-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-instapago-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-instapago-public.php';
 
 		$this->loader = new Instapago_Loader();
 
@@ -135,12 +137,12 @@ class Instapago {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	private function set_locale()
+	{
 
 		$plugin_i18n = new Instapago_i18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
+		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
 
 	/**
@@ -150,13 +152,25 @@ class Instapago {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks()
+	{
 
-		$plugin_admin = new Instapago_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Instapago_Admin($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+		$this->loader->add_action('plugins_loaded', $plugin_admin, 'init_instapago_bank_class');
 
+		// woocommerce hooks
+		$this->loader->add_filter('woocommerce_payment_gateways', $plugin_admin, 'add_instapago_class', 11);
+		$this->loader->add_filter('plugin_action_links_instapago/instapago.php', $plugin_admin, 'instapago_action_links');
+
+		// admin notices
+		// $this->loader->add_action('admin_notices', $plugin_admin, 'custom_admin_notices');
+		// $this->loader->add_action('admin_notices', $plugin_admin, 'instapago_settings_notice');
+		// admin settings page
+		// $this->loader->add_action('admin_menu', $plugin_admin, 'add_instapago_settings_page');
+		$this->loader->add_action('admin_init', $plugin_admin, 'instapago_settings_fields');
 	}
 
 	/**
@@ -166,13 +180,13 @@ class Instapago {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks()
+	{
 
-		$plugin_public = new Instapago_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Instapago_Public($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 	}
 
 	/**
@@ -180,7 +194,8 @@ class Instapago {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function run()
+	{
 		$this->loader->run();
 	}
 
@@ -191,7 +206,8 @@ class Instapago {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name()
+	{
 		return $this->plugin_name;
 	}
 
@@ -201,7 +217,8 @@ class Instapago {
 	 * @since     1.0.0
 	 * @return    Instapago_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function get_loader()
+	{
 		return $this->loader;
 	}
 
@@ -211,8 +228,8 @@ class Instapago {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function get_version()
+	{
 		return $this->version;
 	}
-
 }

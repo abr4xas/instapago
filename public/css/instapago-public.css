@@ -1,0 +1,63 @@
+
+.instapago-form--container {
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.instapago-form--input {
+    width: 100%;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+.instapago-form--select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.instapago-form--tipe {
+    width: 20%;
+}
+.instapago-form--cchnameid {
+    width: 78%;
+}
+.instapago-form--tdc-number {
+    width: 59%;
+}
+.instapago-form--ccv {
+    width: 39%;
+}
+.instapago-form--exp-month {
+    width: 48%;
+}
+.instapago-form--exp-year {
+    width: 50%;
+}
+.instapago-form--txt-help {
+    font-size: 14px;
+    color: #555;
+}
+.instapago-img {
+    max-width: 100%;
+    height: auto;
+	margin: 0 auto;
+}
+.instapago-text-center {
+    text-align: center;
+}
+@media (max-width: 768px) {
+    .instapago-form--container {
+        max-width: 100%;
+    }
+    .instapago-form--input,
+    .instapago-form--select {
+        width: 100%;
+    }
+}

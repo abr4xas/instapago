@@ -1,0 +1,10 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+.instapago_public_keyid,
+.instapago_keyid {
+    width: 30%;
+    max-width: 30%;
+}

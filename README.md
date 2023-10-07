@@ -16,3 +16,20 @@ Instapago is a technological solution designed for the market of electronic comm
 
 
 Los logos son propiedad de Instapago y Banesco, respectivamente.
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Contributing
+
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+
+## Credits
+
+- [angel cruz](https://github.com/abr4xas)
+- [All Contributors](../../contributors)
+
+## License
+
+The GNU GENERAL PUBLIC LICENSE (GPL2). Please see [License File](LICENSE.txt) for more information.

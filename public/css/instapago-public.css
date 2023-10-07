@@ -1,53 +1,8 @@
-/* #instapago_cchname,
-#Field106,
-#instapago_cchnameid,
-#instapago_ccnum,
-#instapago_cvv,
-#tdc-logos,
-#exp_month,
-#exp_year {
-    display: inline-block;
-}
 
-#instapago_cchname {
-    width: 95%;
-    height: 20px;
-}
-
-#instapago_cchnameid {
-    width: 70%;
-    height: 20px;
-}
-
-#instapago_ccnum {
-    width: 30%;
-    height: 20px;
-}
-
-#instapago_cvv {
-    width: 28%;
-    height: 20px;
-}
-
-@media screen and (max-width: 609px) {
-    #instapago_cchname,
-    #Field106,
-    #instapago_cchnameid,
-    #instapago_ccnum,
-    #instapago_cvv,
-    #exp_month,
-    #exp_year {
-        width: 100%;
-    }
-} */
-
-/* Estilos generales para el formulario */
 .instapago-form--container {
-    margin: 0 auto; /* Centrar el formulario horizontalmente */
-    box-sizing: border-box; /* Evitar que los bordes añadan ancho extra */
+    margin: 0 auto;
+    box-sizing: border-box;
 }
-
-/* Estilos para los campos de entrada */
 .instapago-form--input {
     width: 100%;
     margin-bottom: 5px;
@@ -57,8 +12,6 @@
     font-size: 16px;
     box-sizing: border-box;
 }
-
-/* Estilos para los select */
 .instapago-form--select {
     width: 100%;
     padding: 10px;
@@ -69,7 +22,6 @@
     margin-bottom: 5px;
     margin-top: 5px;
 }
-
 .instapago-form--tipe {
     width: 20%;
 }
@@ -88,31 +40,22 @@
 .instapago-form--exp-year {
     width: 50%;
 }
-/* Estilos para los mensajes de ayuda */
 .instapago-form--txt-help {
     font-size: 14px;
     color: #555;
 }
-
-/* Estilos para las imágenes */
 .instapago-img {
     max-width: 100%;
     height: auto;
 	margin: 0 auto;
 }
-
-/* Estilos para la alineación de texto */
 .instapago-text-center {
     text-align: center;
 }
-
-/* Estilos para dispositivos móviles */
 @media (max-width: 768px) {
     .instapago-form--container {
-        max-width: 100%; /* Utilizar todo el ancho disponible */
+        max-width: 100%;
     }
-
-    /* Ajustar el tamaño de fuente u otros estilos según sea necesario para dispositivos móviles */
     .instapago-form--input,
     .instapago-form--select {
         width: 100%;

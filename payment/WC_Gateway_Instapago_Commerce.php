@@ -13,7 +13,7 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 	public string $medthod_title;
 	private string $keyId;
 	private string $publicKeyId;
-	public bool $debug;
+	public string $debug;
 	public string $paymod;
 
 	private function load_dependencies()
@@ -83,7 +83,7 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 
 	public function payment_fields()
 	{
-		if ($this->debug == 'yes') {
+		if ($this->debug === 'yes') {
 			echo '<p><strong>TEST MODE ENABLED</strong></p>';
 		}
 

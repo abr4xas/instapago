@@ -16,8 +16,7 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 	public string $debug;
 	public string $paymod;
 
-	private function load_dependencies()
-	{
+	private function load_dependencies(): void {
 
 		require_once plugin_dir_path(dirname(__FILE__)) . 'payment/Api.php';
 	}
@@ -31,7 +30,7 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 		$this->id = 'instapago';
 		$this->order_button_text = __('Pagar con Instapago', 'instapago');
 		$this->medthod_title = __('Instapago', 'instapago');
-		$this->method_description = sprintf(__('Es una solución tecnológica pensada para el mercado de comercio electrónico (eCommerce) en Venezuela y Latinoamérica, con la intención de ofrecer un producto de primera categoría, que permita a las personas y empresas apalancar sus capacidades de expansión, facilitando los mecanismos de pago para sus clientes, con una integración amigable a los sistemas que actualmente utilizan.', 'instapago'));
+		$this->method_description = __('Es una solución tecnológica pensada para el mercado de comercio electrónico (eCommerce) en Venezuela y Latinoamérica, con la intención de ofrecer un producto de primera categoría, que permita a las personas y empresas apalancar sus capacidades de expansión, facilitando los mecanismos de pago para sus clientes, con una integración amigable a los sistemas que actualmente utilizan.', 'instapago');
 		$this->has_fields = true;
 		// Load the settings.
 		$this->init_form_fields();
@@ -54,8 +53,7 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 	/**
 	 * Admin Panel Options.
 	 */
-	public function admin_options()
-	{
+	public function admin_options(): void {
 		include 'includes/admin-options.php';
 	}
 
@@ -64,8 +62,7 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 	 *
 	 * @return void
 	 */
-	public function init_form_fields()
-	{
+	public function init_form_fields(): void {
 		$this->form_fields = include 'includes/settings-instapago.php';
 	}
 
@@ -74,15 +71,13 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 	 *
 	 * @return string
 	 */
-	public function get_icon()
-	{
+	public function get_icon(): string {
 		$icon_html = '<img src="' . plugins_url('instapago/public/img/instapago-gateway.png') . '" alt="Instapago" class="instapago-icon">';
 
 		return apply_filters('woocommerce_gateway_icon', $icon_html, $this->id);
 	}
 
-	public function payment_fields()
-	{
+	public function payment_fields(): void {
 		if ($this->debug === 'yes') {
 			echo '<p><strong>TEST MODE ENABLED</strong></p>';
 		}
@@ -127,7 +122,9 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 			// Payment received and stock has been reduced
 
 			$order->payment_complete();
-			$order->add_order_note(__('Mensaje del Banco:<br/> <strong>' . $result['msg_banco'] . '</strong><br/> Número de Identificación del Pago:<br/><strong>' . $result['id_pago'] . '</strong><br/>Referencia Bancaria: <br/><strong>' . $result['reference'] . '</strong>', 'woothemes'));
+			$order->add_order_note(
+                __('Mensaje del Banco:<br/> <strong>' . $result['msg_banco'] . '</strong><br/> Número de Identificación del Pago:<br/><strong>' . $result['id_pago'] . '</strong><br/>Referencia Bancaria: <br/><strong>' . $result['reference'] . '</strong>', 'instapago')
+            );
 
 			if ($this->debug == 'yes') {
 
@@ -141,13 +138,15 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 				$logger->log('debug', print_r($result, true), $context);
 			}
 
-			update_post_meta($order_id, 'instapago_voucher', $result['voucher']);
-			update_post_meta($order_id, 'instapago_bank_ref', $result['reference']);
-			update_post_meta($order_id, 'instapago_id_payment', $result['id_pago']);
-			update_post_meta($order_id, 'instapago_bank_msg', $result['msg_banco']);
-			update_post_meta($order_id, 'instapago_sequence', $result['sequence']);
-			update_post_meta($order_id, 'instapago_approval', $result['approval']);
-			update_post_meta($order_id, 'instapago_lote', $result['lote']);
+
+            $order->update_meta_data('instapago_voucher', $result['voucher']);
+            $order->update_meta_data('instapago_bank_ref', $result['reference']);
+            $order->update_meta_data('instapago_id_payment', $result['id_pago']);
+            $order->update_meta_data('instapago_bank_msg', $result['msg_banco']);
+            $order->update_meta_data('instapago_sequence', $result['sequence']);
+            $order->update_meta_data('instapago_approval', $result['approval']);
+            $order->update_meta_data('instapago_lote', $result['lote']);
+            $order->save();
 
 			// Reduce stock levels
 			wc_reduce_stock_levels($order_id);
@@ -163,17 +162,16 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 		}
 	}
 
-	/**
-	 * Realiza Transaccion
-	 * Efectúa y retornar una respuesta a un metodo de pago.
-	 *
-	 * @param string $url endpoint a consultar
-	 * @param $fields datos para la consulta
-	 *
-	 * @return $response array resultados de la transaccion
-	 */
-	private function curlTransaccion($url, $fields)
-	{
+    /**
+     * Realiza Transaccion
+     * Efectúa y retornar una respuesta a un metodo de pago.
+     *
+     * @param  string  $url  endpoint a consultar
+     * @param  array  $fields  para la consulta
+     *
+     * @return mixed $response array resultados de la transaccion
+     */
+	private function curlTransaccion( string $url, array $fields): mixed {
 		$args = [
 			'method' => 'POST',
 			'headers'  => [
@@ -184,20 +182,18 @@ class WC_Gateway_Instapago_Commerce extends WC_Payment_Gateway
 
 		$response = wp_remote_retrieve_body(wp_remote_post($url, $args));
 
-		$response = json_decode($response, true);
-
-		return $response;
+        return json_decode($response, true);
 	}
 
-	/**
-	 * Verifica Codigo de Estado de transaccion
-	 * Verifica y retornar el resultado de la transaccion.
-	 *
-	 * @param $response datos de la consulta
-	 *
-	 * @return $result array datos de transaccion
-	 */
-	private function checkResponseCode($response)
+    /**
+     * Verifica Codigo de Estado de transaccion
+     * Verifica y retornar el resultado de la transaccion.
+     *
+     * @param  array  $response  de la consulta
+     *
+     * @return array|void $result array datos de transaccion
+     */
+	private function checkResponseCode( array $response)
 	{
 		$code = $response['code'];
 		switch ($code) {

@@ -3,7 +3,7 @@
 /**
  * Provide a public-facing view for the plugin
  *
- * This file is used to markup the public-facing aspects of the plugin.
+ * This file is used to mark up the public-facing aspects of the plugin.
  *
  * @link       https://angelcruz.dev
  * @since      8.0.0

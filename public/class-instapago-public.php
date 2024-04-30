@@ -19,7 +19,7 @@ class Instapago_Public {
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -28,16 +28,17 @@ class Instapago_Public {
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	private string $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    8.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string    $plugin_name  The name of the plugin.
+	 * @param  string  $version    The version of this plugin.
+	 *
+	 *@since    8.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( string $plugin_name, string $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
@@ -49,13 +50,13 @@ class Instapago_Public {
 	 *
 	 * @since    8.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles(): void {
 
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Instapago_Loader as all of the hooks are defined
+		 * defined in Instapago_Loader as all the hooks are defined
 		 * in that particular class.
 		 *
 		 * The Instapago_Loader will then create the relationship
@@ -63,7 +64,13 @@ class Instapago_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/instapago-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style(
+            $this->plugin_name,
+            plugin_dir_url( __FILE__ ) . 'css/instapago-public.css',
+            [],
+            $this->version,
+            'all'
+        );
 
 	}
 
@@ -72,13 +79,13 @@ class Instapago_Public {
 	 *
 	 * @since    8.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts(): void {
 
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Instapago_Loader as all of the hooks are defined
+		 * defined in Instapago_Loader as all the hooks are defined
 		 * in that particular class.
 		 *
 		 * The Instapago_Loader will then create the relationship
@@ -86,7 +93,13 @@ class Instapago_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/instapago-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script(
+            $this->plugin_name,
+            plugin_dir_url( __FILE__ ) . 'js/instapago-public.js',
+            ['jquery'],
+            $this->version,
+            false
+        );
 
 	}
 

@@ -1,5 +1,7 @@
 <?php
 
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -20,7 +22,7 @@ class Instapago_Admin
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -29,16 +31,17 @@ class Instapago_Admin
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	private string $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    8.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string    $plugin_name  The name of this plugin.
+	 * @param  string  $version    The version of this plugin.
+	 *
+	 *@since    8.0.0
 	 */
-	public function __construct($plugin_name, $version)
+	public function __construct( string $plugin_name, string $version)
 	{
 
 		$this->plugin_name = $plugin_name;
@@ -50,14 +53,13 @@ class Instapago_Admin
 	 *
 	 * @since    8.0.0
 	 */
-	public function enqueue_styles()
-	{
+	public function enqueue_styles(): void {
 
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Instapago_Loader as all of the hooks are defined
+		 * defined in Instapago_Loader as all the hooks are defined
 		 * in that particular class.
 		 *
 		 * The Instapago_Loader will then create the relationship
@@ -65,7 +67,13 @@ class Instapago_Admin
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/instapago-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style(
+            $this->plugin_name,
+            plugin_dir_url(__FILE__) . 'css/instapago-admin.css',
+            [],
+            $this->version,
+            'all'
+        );
 	}
 
 	/**
@@ -73,14 +81,13 @@ class Instapago_Admin
 	 *
 	 * @since    8.0.0
 	 */
-	public function enqueue_scripts()
-	{
+	public function enqueue_scripts(): void {
 
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Instapago_Loader as all of the hooks are defined
+		 * defined in Instapago_Loader as all the hooks are defined
 		 * in that particular class.
 		 *
 		 * The Instapago_Loader will then create the relationship
@@ -88,19 +95,26 @@ class Instapago_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/instapago-admin.js', array('jquery'), $this->version, false);
+		wp_enqueue_script(
+            $this->plugin_name,
+            plugin_dir_url(__FILE__) . 'js/instapago-admin.js',
+            ['jquery'],
+            $this->version,
+            false
+        );
 	}
 
 	/**
 	 * Undocumented function
 	 *
-	 * @param array $links
-	 * @return void
+	 * @param  array  $links
+	 *
+	 * @return array|string[]
 	 */
-	public function instapago_action_links($links)
-	{
+	public function instapago_action_links( array $links ): array {
 		$plugin_links = [
-			'<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=instapago') . '">' . __('Settings', 'instapago') . '</a>',
+			'<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=instapago') . '">' .
+            __('Settings', 'instapago') . '</a>',
 		];
 
 		// Merge our new link with the default ones
@@ -110,29 +124,26 @@ class Instapago_Admin
 	/**
 	 * Add the gateway to WC Available Gateways.
 	 *
-	 * @since 8.0.0
-	 *
 	 * @param array $methods all available WC gateways
 	 *
 	 * @return string[] $methods all WC gateways + WC_Gateway_Instapago_Commerce
+	 *@since 8.0.0
+	 *
 	 */
-	public function add_instapago_class($methods)
-	{
+	public function add_instapago_class(array $methods): array {
 		$methods[] = 'WC_Gateway_Instapago_Commerce';
 
 		return $methods;
 	}
 
-	public function init_instapago_bank_class()
-	{
+	public function init_instapago_bank_class(): WC_Gateway_Instapago_Commerce {
 
 		require_once plugin_dir_path(dirname(__FILE__)) . 'payment/WC_Gateway_Instapago_Commerce.php';
 
 		return new WC_Gateway_Instapago_Commerce();
 	}
 
-	public function custom_admin_notices()
-	{
+	public function custom_admin_notices(): void {
 		if (!get_option('instapago_keyid') || !get_option('instapago_public_keyid')) {
 			echo '<div class="notice notice-error">
 			<p>Los parámetros "keyId" y "publicKeyId" son requeridos para poder iniciar a usar instapago.</p>
@@ -140,8 +151,7 @@ class Instapago_Admin
 		}
 	}
 
-	public function add_instapago_settings_page()
-	{
+	public function add_instapago_settings_page(): void {
 		add_menu_page(
 			__('Instapago Settings', 'instapago'), // Título de la página
 			__('Instapago ', 'instapago'), // Texto del menú
@@ -152,20 +162,18 @@ class Instapago_Admin
 		);
 	}
 
-	public function show_instapago_settings_page()
-	{
+	public function show_instapago_settings_page(): void {
 
 		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/instapago-settings.php';
 	}
 
-	public function instapago_settings_notice()
-	{
+	public function instapago_settings_notice(): void {
 
 		if (
 			isset($_GET['page'])
 			&& 'instapago-settings' == $_GET['page']
 			&& isset($_GET['settings-updated'])
-			&& true == $_GET['settings-updated']
+            && $_GET['settings-updated']
 		) {
 			echo '
 			<div class="notice notice-success is-dismissible">
@@ -176,8 +184,8 @@ class Instapago_Admin
 			';
 		}
 	}
-	public function instapago_settings_fields()
-	{
+
+	public function instapago_settings_fields(): void {
 		// I created variables to make the things clearer
 		$page_slug = 'instapago-settings';
 		$option_group = 'instapago_settings';
@@ -231,9 +239,41 @@ class Instapago_Admin
 	}
 
 	// custom callback function to print field HTML
-	public function input_text($args)
-	{
-		// print("<pre>" . print_r($options, true) . "</pre>");
+	public function input_text($args): void {
 		echo '<input type="'. $args['type'] .'" id="'. $args['name'] . '" class="' . $args['name'] . '" name="'. $args['name'] .'" value="'. $args['value'] .'" />';
 	}
+
+    public function instapago_gateway_cart_checkout_blocks_compatibility(): void {
+
+        $path =  WP_PLUGIN_DIR.'/instapago';
+        if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+            FeaturesUtil::declare_compatibility(
+                'cart_checkout_blocks',
+                $path,
+                true // true (compatible, default) or false (not compatible)
+            );
+
+            FeaturesUtil::declare_compatibility(
+                'custom_order_tables',
+                $path,
+                true
+            );
+        }
+
+    }
+
+    public function instapago_gateway_block_support(): void {
+
+        // here we're including our "gateway block support class"
+        require_once WP_PLUGIN_DIR.'/instapago/support/class-wc-instapago-gateway-blocks-support.php';
+
+        // registering the PHP class we have just included
+        add_action(
+            'woocommerce_blocks_payment_method_type_registration',
+            function ( Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+                $payment_method_registry->register( new WC_Instapago_Gateway_Blocks_Support );
+            }
+        );
+
+    }
 }

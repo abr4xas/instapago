@@ -5,7 +5,7 @@ Donate link: https://angelcruz.dev/donate
 Tags: ecommerce, e-commerce, store, sales, sell, shop, cart, checkout, venezuela, instapago, banesco
 Requires at least: 6.3.1
 Tested up to: 6.4.0
-Stable tag: 8.1.0
+Stable tag: 9.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

@@ -20,5 +20,7 @@ prefill.php
 prepros.cfg
 prepros-6.config
 /bower_components/
-/node_modules/
 .gitignore
+/src
+package.json
+*.lock

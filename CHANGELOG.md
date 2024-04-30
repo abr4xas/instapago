@@ -2,6 +2,14 @@
 
 All notable changes to `Instapago` will be documented in this file.
 
+## v8.1.0 - 2023-11-21
+
+### What's Changed
+
+- fix en validación modo desarrollo by @abr4xas in https://github.com/abr4xas/instapago/pull/43
+
+**Full Changelog**: https://github.com/abr4xas/instapago/compare/v8.0.0...v8.1.0
+
 ## v8.0.0 - 2023-10-19
 
 ### What's Changed
